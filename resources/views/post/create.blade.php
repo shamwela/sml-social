@@ -5,7 +5,7 @@
     @csrf
 
     <label for='text'>Text</label>
-    <input name='text' id='text' type='text' required>
+    <textarea name='text' id='text' required></textarea>
 
     {{-- Made it manual for now --}}
     <label for='user_id'>User ID<label>

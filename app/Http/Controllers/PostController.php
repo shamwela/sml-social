@@ -85,24 +85,10 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $post = new Post;
+        // Disallow updating image
+        $post = Post::find($id);
         $post->text = $request->text;
         $post->user_id = $request->user_id;
-        // If database image name and client image name are different, it's a new image
-        if ($post->image_name !== $request->image->getClientOriginalName()) {
-            $old_image_path = public_path() . '/images/' . $post->image_name;
-            // Delete old image
-            unlink($old_image_path);
-
-            // To store the new image
-            $image = $request->image;
-            // Make the image name unique by adding year, month, date, hour and minute.
-            $image_name = date('YmdHi') . $image->getClientOriginalName();
-            // Store in the file system
-            $image->move(public_path() . '/images/', $image_name);
-            // Store in the database
-            $post->image_name = $image_name;
-        }
         $post->save();
         return redirect()->route('home');
     }
