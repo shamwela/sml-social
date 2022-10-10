@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    @apply p-8;
+}
+
+h1,
+h2,
+h3 {
+    @apply font-bold;
+}
+
+h1 {
+    @apply text-3xl;
+}
+
+a {
+    @apply text-blue-600 hover:underline;
+}
