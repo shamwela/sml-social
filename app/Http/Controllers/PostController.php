@@ -61,8 +61,7 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Post::find($id);
-        $image_path = public_path() . '/images/' . $post->image_name;
-        return view('post.show', compact('post', 'image_path'));
+        return view('post.show', compact('post'));
     }
 
     /**

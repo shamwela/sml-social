@@ -5,10 +5,11 @@
     </head>
     <body>
       <nav>
-        <a href='{{ route('home') }}'>Home</a>
+        <a href='{{ route("home") }}'>Home</a>
         
         {{-- More links here later --}}
       </nav>
+      <a href='{{ route("post.create") }}'>Create a new post</a>
 		  {{ $slot }}
     </body>
 </html>
