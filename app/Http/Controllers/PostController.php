@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -14,7 +15,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        // Set this dynamically later
+        $user_id = 1;
+        $posts = DB::select(
+            DB::raw('select * from posts inner join friend_users on friend_users.friend_id=posts.user_id where friend_users.user_id = 1')
+        );
         return view('home', compact('posts'));
     }
 

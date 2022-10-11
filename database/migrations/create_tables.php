@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('friends_users', function (Blueprint $table) {
+        Schema::create('friend_users', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('friend_id')->constrained('users')->onDelete('cascade');
 
@@ -44,7 +44,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('friends_users');
+        Schema::dropIfExists('friend_users');
         Schema::dropIfExists('posts');
         Schema::dropIfExists('users');
     }
