@@ -37,6 +37,8 @@ class AuthController extends Controller
 
         // JWT and session are for losers LOL
         return redirect()->route('home')
+            // Accessing user_id here might not work
+            ->withCookie(cookie()->forever('user_id', $user->id))
             ->withCookie(cookie()->forever('email', $request->email))
             ->withCookie(cookie()->forever('password', $request->password));
     }
@@ -50,7 +52,7 @@ class AuthController extends Controller
         if (!$valid) {
             return redirect()->route('auth.login.show');
         }
-
+        
         $existing_user = User::firstWhere('email', $request->email);
         if (!$existing_user) {
             // Improve UX here later
@@ -61,9 +63,10 @@ class AuthController extends Controller
             // Wrong password
             abort(400);
         }
-
+        
         return redirect()->route('home')
-            ->withCookie(cookie()->forever('email', $request->email))
+        ->withCookie(cookie()->forever('user_id', $existing_user->id))
+        ->withCookie(cookie()->forever('email', $request->email))
             ->withCookie(cookie()->forever('password', $request->password));
     }
 }
