@@ -8,10 +8,7 @@
     <label for='text'>Text</label>
     <textarea name='text' id='text' required>{{ $post->text }}</textarea>
 
-    {{-- Manually insert for now --}}
-    <label for='user_id'>User ID</label>
-    <input name='user_id' id='user_id' value='{{ $post->user_id }}' required>
-    
-    <button type='submit'>Update</button>
+    <button type='submit'>Update post</button>
+    <img src='{{ asset('images/'.$post->image_name) }}' alt='{{ $post->image_name }}' width='500'>
   </form>
 </x-layout>

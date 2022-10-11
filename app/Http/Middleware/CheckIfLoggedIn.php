@@ -16,7 +16,7 @@ class CheckIfLoggedIn
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->cookie('email') and $request->cookie('password')) {
+        if ($request->cookie('user_id') and $request->cookie('email') and $request->cookie('password')) {
             return $next($request);
         } else {
             return redirect()->route('auth.register.show');

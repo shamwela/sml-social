@@ -6,7 +6,7 @@
   
   @foreach ($posts as $post)
     <div>
-      <div class='flex gap-x-4'>
+      <div class='flex gap-x-4 items-center'>
         <a href='{{ route("post.edit", $post->id) }}'>Edit</a>
         
         <form action='{{ route("post.destroy", $post->id) }}' method='post'>

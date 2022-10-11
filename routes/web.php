@@ -5,7 +5,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 
-Route::get('/', [PostController::class, 'index'])->name('home')->middleware('CheckIfLoggedIn');
+Route::get('/', [PostController::class, 'show_friend_posts'])->name('home')->middleware('CheckIfLoggedIn');
 Route::resource('/post', PostController::class);
 
 Route::view('/auth/register', 'auth.register')->name('auth.register.show');

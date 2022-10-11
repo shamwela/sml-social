@@ -8,12 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
+    public function show_friend_posts(Request $request)
     {
         $user_id = $request->cookie('user_id');
         $posts = DB::select(
@@ -44,7 +39,7 @@ class PostController extends Controller
     {
         $post = new Post;
         $post->text = $request->text;
-        $post->user_id = $request->user_id;
+        $post->user_id = $request->cookie('user_id');
         if ($request->hasFile('image')) {
             $image = $request->image;
             // Make the image name unique by adding year, month, date, hour and minute.
@@ -94,7 +89,7 @@ class PostController extends Controller
         // Disallow updating image
         $post = Post::find($id);
         $post->text = $request->text;
-        $post->user_id = $request->user_id;
+        $post->user_id = $request->cookie('user_id');
         $post->save();
         return redirect()->route('home');
     }
