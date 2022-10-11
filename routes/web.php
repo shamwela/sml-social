@@ -14,4 +14,6 @@ Route::post('/auth/register', [AuthController::class, 'register'])->name('auth.r
 Route::view('/auth/login', 'auth.login')->name('auth.login.show');
 Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login.store');
 
+Route::delete('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
+
 Route::resource('/user', UserController::class);

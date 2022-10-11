@@ -13,12 +13,13 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Set this dynamically later
-        $user_id = 1;
+        $user_id = $request->cookie('user_id');
         $posts = DB::select(
-            DB::raw('select * from posts inner join friend_users on friend_users.friend_id=posts.user_id where friend_users.user_id = 1')
+            // Select the user's friends' posts
+            DB::raw('select * from posts inner join friend_users on friend_users.friend_id=posts.user_id where friend_users.user_id = :user_id'),
+            array('user_id' => $user_id)
         );
         return view('home', compact('posts'));
     }

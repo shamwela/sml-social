@@ -10,6 +10,12 @@
       <nav class='flex gap-x-8 justify-center'>
         <a href='{{ route("home") }}'>Home</a>
         <a href='{{ route("user.show", Cookie::get('user_id')) }}'>View profile</a>
+        
+        <form action='{{ route("auth.logout") }}' method='post'>
+          @method('delete')
+          @csrf
+          <button type='submit'>Logout</button>
+        </form>
       </nav>
       @endif
         <main class='mx-auto w-full md:max-w-md flex flex-col gap-y-4'>{{ $slot }}</main>

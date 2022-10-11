@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Cookie;
 
 class AuthController extends Controller
 {
@@ -52,7 +51,7 @@ class AuthController extends Controller
         if (!$valid) {
             return redirect()->route('auth.login.show');
         }
-        
+
         $existing_user = User::firstWhere('email', $request->email);
         if (!$existing_user) {
             // Improve UX here later
@@ -63,10 +62,20 @@ class AuthController extends Controller
             // Wrong password
             abort(400);
         }
-        
+
         return redirect()->route('home')
-        ->withCookie(cookie()->forever('user_id', $existing_user->id))
-        ->withCookie(cookie()->forever('email', $request->email))
+            ->withCookie(cookie()->forever('user_id', $existing_user->id))
+            ->withCookie(cookie()->forever('email', $request->email))
             ->withCookie(cookie()->forever('password', $request->password));
+    }
+
+    public function logout()
+    {
+        // Queue the cookies to send with the response
+        // The response will tell the browser to delete the cookies
+        Cookie::queue(Cookie::forget('user_id'));
+        Cookie::queue(Cookie::forget('email'));
+        Cookie::queue(Cookie::forget('password'));
+        return redirect()->route('home');
     }
 }
