@@ -35,6 +35,7 @@ class AuthController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
+        // JWT and session are for losers LOL
         return redirect()->route('home')
             ->withCookie(cookie()->forever('email', $request->email))
             ->withCookie(cookie()->forever('password', $request->password));

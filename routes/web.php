@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AuthController;
 
-Route::get('/', [PostController::class, 'index'])->name('home');
+Route::get('/', [PostController::class, 'index'])->name('home')->middleware('CheckIfLoggedIn');
 Route::resource('/post', PostController::class);
 
 Route::view('/auth/register', 'auth.register')->name('auth.register.show');

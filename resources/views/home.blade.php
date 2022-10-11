@@ -1,5 +1,9 @@
 <x-layout>
   <x-slot name='title'>Home</x-slot>
+  <h1>Home</h1>
+  
+  <a href='{{ route("post.create") }}'>Create a new post</a>   
+  
   @foreach ($posts as $post)
     <div>
       <a href='{{ route("post.show", $post->id) }}'>{{ $post->text }}</a>
