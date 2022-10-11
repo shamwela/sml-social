@@ -16,5 +16,5 @@
     <button type='submit'>Register</button>
   </form>
   
-  <p>Already have an account? <a href='{{ route("auth.login.show") }}'>Login</a></p>
+  <p class='text-center'>Already have an account? <a href='{{ route("auth.login.show") }}'>Login</a></p>
 </x-layout>
