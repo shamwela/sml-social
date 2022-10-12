@@ -13,7 +13,12 @@ class PostController extends Controller
         $user_id = $request->cookie('user_id');
         $posts = DB::select(
             // Select the user's friends' posts
-            DB::raw('select * from posts inner join friend_users on friend_users.friend_id=posts.user_id where friend_users.user_id = :user_id'),
+            DB::raw(
+                'select posts.id, text, image_name, posts.user_id, name as user_name from posts 
+                inner join friend_users on friend_users.friend_id = posts.user_id
+                inner join users on users.id = posts.user_id
+                where friend_users.user_id = :user_id'
+            ),
             array('user_id' => $user_id)
         );
         return view('home', compact('posts'));

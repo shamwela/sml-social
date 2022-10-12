@@ -6,7 +6,7 @@
       @vite('resources/css/global.css')
     </head>
 
-    <body class='bg-gray-300 flex flex-col gap-y-4'>
+    <body>
 
       {{-- If logged in, show navigation --}}
       @if (Cookie::get('user_id') and Cookie::get('email') and Cookie::get('password'))

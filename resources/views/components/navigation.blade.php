@@ -6,6 +6,6 @@
   <form action='{{ route("auth.logout") }}' method='post'>
     @method('delete')
     @csrf
-    <button type='submit' class='bg-danger'>Logout</button>
+    <button onclick='return confirm("Are you sure?")' type='submit' class='bg-danger'>Logout</button>
   </form>
 </nav>

@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\FriendUser;
+use Exception;
 
 class UserController extends Controller
 {
@@ -91,18 +92,22 @@ class UserController extends Controller
     public function add_friend(Request $request, $friend_id)
     {
         $user_id = $request->cookie('user_id');
-        FriendUser::insert([
-            [
-                'user_id' => $user_id,
-                'friend_id' => $friend_id,
-            ],
-            [
-                // Also save the other way
-                // Because this takes more storage, improve later
-                'user_id' => $friend_id,
-                'friend_id' => $user_id,
-            ],
-        ]);
+        try {
+            FriendUser::insert([
+                [
+                    'user_id' => $user_id,
+                    'friend_id' => $friend_id,
+                ],
+                [
+                    // Also save the other way
+                    // Because this takes more storage, improve later
+                    'user_id' => $friend_id,
+                    'friend_id' => $user_id,
+                ],
+            ]);
+        } catch (Exception $e) {
+            return redirect()->route('user.index');
+        }
         return redirect()->route('user.index');
     }
 }

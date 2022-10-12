@@ -6,7 +6,8 @@
   @if ($type === 'textarea')
     <textarea name={{ $name }} id={{ $name }} required>{{ old($name) }}</textarea>
   @else
-    <input name={{ $name }} id={{ $name }} value='{{ old($name) }}' type={{ $type }} required>
+    <input name={{ $name }} id={{ $name }} value='{{ old($name) }}' 
+      type={{ $type }} {{ !$optional && 'required' }}>
   @endif
 
   @error($name)

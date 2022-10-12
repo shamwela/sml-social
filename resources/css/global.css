@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-    @apply p-8;
+    @apply p-8 bg-gray-100 flex flex-col gap-y-4;
 }
 
 h1,
@@ -26,14 +26,25 @@ form {
 
 input,
 button,
+.button,
+textarea {
+    @apply px-4 py-1;
+}
+
+input,
+button,
 .button {
-    @apply rounded-full hover:no-underline px-4 py-1;
+    @apply rounded-full hover:no-underline;
 }
 
 button,
 .button,
 [type="submit"] {
     @apply bg-blue-600 text-white;
+}
+
+textarea {
+    @apply rounded-lg;
 }
 
 label {
