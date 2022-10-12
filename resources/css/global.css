@@ -27,5 +27,15 @@ form {
 input,
 button,
 .button {
-    @apply rounded-full bg-blue-600 hover:no-underline text-white px-4 py-1;
+    @apply rounded-full hover:no-underline px-4 py-1;
+}
+
+button,
+.button,
+[type="submit"] {
+    @apply bg-blue-600 text-white;
+}
+
+.bg-danger {
+    @apply bg-red-600;
 }

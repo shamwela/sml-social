@@ -2,22 +2,17 @@
 <html>
     <head>
 	    <title>{{ $title }}</title>
-      @vite('resources/css/app.css')
+      <meta name='description' content='{{ $title }}'>
+      @vite('resources/css/global.css')
     </head>
+
     <body class='bg-gray-300 flex flex-col gap-y-4'>
-      {{-- If logged in --}}
-      @if (Cookie::get('email') and Cookie::get('password'))
-      <nav class='flex gap-x-8 justify-center items-center'>
-        <a href='{{ route("home") }}'>Home</a>
-        <a href='{{ route("user.show", Cookie::get('user_id')) }}'>View profile</a>
-        
-        <form action='{{ route("auth.logout") }}' method='post'>
-          @method('delete')
-          @csrf
-          <button type='submit' class='text-red-600'>Logout</button>
-        </form>
-      </nav>
+
+      {{-- If logged in, show navigation --}}
+      @if (Cookie::get('user_id') and Cookie::get('email') and Cookie::get('password'))
+        <x-navigation />
       @endif
-        <main class='mx-auto w-full md:max-w-md flex flex-col gap-y-4'>{{ $slot }}</main>
+
+      <main class='mx-auto w-full md:max-w-md flex flex-col gap-y-4'>{{ $slot }}</main>
     </body>
 </html>
