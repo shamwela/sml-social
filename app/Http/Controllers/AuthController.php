@@ -14,19 +14,21 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $valid = $request->validate([
+        $request->validate([
             'name' => 'required|min:3|max:50',
-            'email' => self::$email_validation,
+            // Only when register, the email should be unique
+            'email' => self::$email_validation . '|unique:users',
             'password' => self::$password_validation
         ]);
-        if (!$valid) {
-            // Later, show errors in an easy-to-understand way
-            return redirect()->route('auth.register.show');
-        }
+
         $existing_user = User::firstWhere('email', $request->email);
         if ($existing_user) {
-            // Improve UX here later
-            abort(400);
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors(
+                    ['email' => 'You already have an account with the email ' . $request->email . '. Please login instead.']
+                );
         }
         $user = new User;
         $user->name = $request->name;
@@ -34,9 +36,7 @@ class AuthController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
-        // JWT and session are for losers LOL
         return redirect()->route('home')
-            // Accessing user_id here might not work
             ->withCookie(cookie()->forever('user_id', $user->id))
             ->withCookie(cookie()->forever('email', $request->email))
             ->withCookie(cookie()->forever('password', $request->password));
@@ -44,23 +44,23 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $valid = $request->validate([
+        $request->validate([
             'email' => self::$email_validation,
             'password' => self::$password_validation
         ]);
-        if (!$valid) {
-            return redirect()->route('auth.login.show');
-        }
 
         $existing_user = User::firstWhere('email', $request->email);
         if (!$existing_user) {
-            // Improve UX here later
-            // No account with that email
-            abort(400);
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors(['email' => 'No account with the email ' . $request->email . '.']);
         }
         if (!Hash::check($request->password, $existing_user->password)) {
-            // Wrong password
-            abort(400);
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors(['password' => 'Wrong password.']);
         }
 
         return redirect()->route('home')

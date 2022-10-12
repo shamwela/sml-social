@@ -3,13 +3,10 @@
   <h1>Login</h1>
   <form action='{{ route("auth.login.store") }}' method='post'>
     @csrf
-
-    <label for='email'>Email</label>
-    <input name='email' id='email' type='email' required>
-
-    <label for='password'>Password</label>
-    <input name='password' id='password' type='password' required>
-
+    <x-input name='email' type='email' />
+    <x-input name='password' type='password' />
     <button type='submit'>Login</button>
   </form>
+
+  <p class='text-center'>Don't have an account? <a href='{{ route("auth.register.show") }}'>Register</a></p>
 </x-layout>
