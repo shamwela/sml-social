@@ -36,6 +36,11 @@ button,
     @apply bg-blue-600 text-white;
 }
 
+label {
+    /* Because inputs' corners are rounded */
+    @apply ml-4;
+}
+
 .bg-danger {
     @apply bg-red-600;
 }

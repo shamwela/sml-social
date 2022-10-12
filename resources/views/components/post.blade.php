@@ -5,7 +5,7 @@
         <form action='{{ route("post.destroy", $post->id) }}' method='post'>
           @method('delete')
           @csrf
-          <button onclick='return confirm("Are you sure?")' type='submit'>Delete</button>
+          <button onclick='return confirm("Are you sure?")' type='submit' class='danger'>Delete</button>
         <form>
     </div>
 

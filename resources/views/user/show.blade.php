@@ -1,8 +1,8 @@
 <x-layout :title='$user->name'>
-  <p>Your email: {{ $user->email }}</p>
+  <p class='text-center'>Email: {{ $user->email }}</p>
   
   @if (!$posts->count())
-    <p>No posts.</p>
+    <p class='text-center'>No posts.</p>
   @endif
 
   @foreach ($posts as $post)
