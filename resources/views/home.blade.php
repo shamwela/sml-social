@@ -2,7 +2,7 @@
   <x-slot name='title'>SML Social</x-slot>
   <h1>SML Social</h1>
   
-  <a href='{{ route("post.create") }}'>Create a new post</a>   
+  <a href='{{ route("post.create") }}' class='button max-w-fit mx-auto'>Create post</a>   
   
   @foreach ($posts as $post)
     <x-post :$post />

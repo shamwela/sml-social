@@ -25,6 +25,7 @@ form {
 }
 
 input,
-button {
-    @apply rounded-lg px-3 py-1 border-2 border-black;
+button,
+.button {
+    @apply rounded-full bg-blue-600 hover:no-underline text-white px-4 py-1;
 }

@@ -14,7 +14,7 @@
         <form action='{{ route("auth.logout") }}' method='post'>
           @method('delete')
           @csrf
-          <button type='submit'>Logout</button>
+          <button type='submit' class='text-red-600'>Logout</button>
         </form>
       </nav>
       @endif
