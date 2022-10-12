@@ -17,3 +17,4 @@ Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login.s
 Route::delete('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
 Route::resource('/user', UserController::class);
+Route::post('/friend/store/{friend_id}', [UserController::class, 'add_friend'])->name('friend.store');

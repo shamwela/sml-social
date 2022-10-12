@@ -30,11 +30,12 @@ class AuthController extends Controller
                     ['email' => 'You already have an account with the email ' . $request->email . '. Please login instead.']
                 );
         }
-        $user = new User;
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->save();
+        $hashed_password = Hash::make($request->password);
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $hashed_password
+        ]);
 
         return redirect()->route('home')
             ->withCookie(cookie()->forever('user_id', $user->id))

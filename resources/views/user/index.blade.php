@@ -5,7 +5,11 @@
       @if ($user->id != Cookie::get('user_id'))
         <div class='flex gap-x-8 mx-auto items-center'>
           <a href='{{ route("user.show", $user->id) }}'>{{ $user->name }}</a>
-          <a href='' class='button'>Add friend</a>
+
+          <form action='{{ route("friend.store", $user->id) }}' method='post'>
+            @csrf
+            <button type='submit'>Add friend</button>
+          </form>
         </div>
       @endif
     @endforeach
