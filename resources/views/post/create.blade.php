@@ -1,6 +1,4 @@
-<x-layout>
-  <x-slot name='title'>Create post</x-slot>
-  <h1>Create post</h1>
+<x-layout title='Create post'>
   <form action='{{ route('post.store') }}' method='post' enctype='multipart/form-data'>
     @csrf
     <x-input name='text' type='textarea' />

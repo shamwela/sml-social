@@ -1,6 +1,4 @@
-<x-layout>
-  <x-slot name='title'>Edit post</x-slot>
-  <h1>Edit post</h1>
+<x-layout title='Edit post'>
   <form action='{{ route("post.update", $post->id) }}' method='post'>
     @method('put')
     @csrf

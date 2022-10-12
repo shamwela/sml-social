@@ -1,6 +1,4 @@
-<x-layout>
-  <x-slot name='title'>Login</x-slot>
-  <h1>Login</h1>
+<x-layout title='Login'>
   <form action='{{ route("auth.login.store") }}' method='post'>
     @csrf
     <x-input name='email' type='email' />

@@ -13,6 +13,9 @@
         <x-navigation />
       @endif
 
-      <main class='mx-auto w-full md:max-w-md flex flex-col gap-y-4'>{{ $slot }}</main>
+      <main class='mx-auto w-full md:max-w-md flex flex-col gap-y-4'>
+        <h1>{{ $title }}</h1>
+        {{ $slot }}
+      </main>
     </body>
 </html>

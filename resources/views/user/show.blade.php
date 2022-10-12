@@ -1,13 +1,8 @@
-<x-layout>
-  <x-slot name='title'>{{ $user->name }}</x-slot>
-  <h1>{{ $user->name }}</h1>
+<x-layout :title='$user->name'>
   <p>Your email: {{ $user->email }}</p>
   
   @if (!$posts->count())
-    <p>
-      You haven't posted anything.
-      <a href='{{ route("post.create") }}'>Post something.</a>
-    </p>
+    <p>No posts.</p>
   @endif
 
   @foreach ($posts as $post)

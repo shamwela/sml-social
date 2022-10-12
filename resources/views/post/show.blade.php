@@ -1,4 +1,3 @@
-<x-layout>
-  <x-slot name='title'>Post</x-slot>
+<x-layout title='Post'>
   <x-post :$post />
 </x-layout>
