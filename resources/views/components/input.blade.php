@@ -2,7 +2,13 @@
   <label for={{ $name }}>
     {{ ucfirst($name) }}
   </label>
-  <input name={{ $name }} id={{ $name }} value='{{ old($name) }}' type={{ $type }} required>
+  
+  @if ($type === 'textarea')
+    <textarea name={{ $name }} id={{ $name }} required>{{ old($name) }}</textarea>
+  @else
+    <input name={{ $name }} id={{ $name }} value='{{ old($name) }}' type={{ $type }} required>
+  @endif
+
   @error($name)
     <x-error :$message />
   @enderror
