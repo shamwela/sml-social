@@ -1,26 +1,36 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
+// Use middlewares here directly to avoid over-engineering
+use App\Http\Middleware\RedirectIfLoggedOut;
+use App\Http\Middleware\RedirectIfLoggedIn;
+
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SavedPostController;
 
-Route::get('/', [PostController::class, 'show_friend_posts'])->name('home')->middleware('CheckIfLoggedIn');
-Route::resource('/post', PostController::class);
+// If the user's already logged in, no need to register or login again
+Route::middleware(RedirectIfLoggedIn::class)->group(function () {
+  Route::view('auth/register', 'auth.register')->name('auth.register.show');
+  Route::post('auth/register', [AuthController::class, 'register'])->name('auth.register.store');
 
-// These names can be improved
-Route::post('/save-post/{post_id}', [SavedPostController::class, 'save'])->name('save-post');
-Route::get('/saved-posts', [SavedPostController::class, 'index'])->name('saved-posts.index');
-Route::delete('/saved-posts/{post_id}', [SavedPostController::class, 'destroy'])->name('saved-posts.destroy');
+  Route::view('auth/login', 'auth.login')->name('auth.login.show');
+  Route::post('auth/login', [AuthController::class, 'login'])->name('auth.login.store');
+});
 
-Route::view('/auth/register', 'auth.register')->name('auth.register.show');
-Route::post('/auth/register', [AuthController::class, 'register'])->name('auth.register.store');
+// If logged out, disallow these routes
+Route::middleware(RedirectIfLoggedOut::class)->group(function () {
+  Route::delete('auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
-Route::view('/auth/login', 'auth.login')->name('auth.login.show');
-Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login.store');
+  Route::get('/', [PostController::class, 'show_friend_posts'])->name('home');
+  Route::resource('post', PostController::class);
 
-Route::delete('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
+  Route::post('save-post/{post_id}', [SavedPostController::class, 'save'])->name('save-post');
+  Route::get('saved-posts', [SavedPostController::class, 'index'])->name('saved-posts.index');
+  Route::delete('unsave-post/{post_id}', [SavedPostController::class, 'destroy'])->name('unsave-post');
 
-Route::resource('/user', UserController::class);
-Route::post('/friend/store/{friend_id}', [UserController::class, 'add_friend'])->name('friend.store');
+  Route::resource('user', UserController::class);
+  Route::post('friend/store/{friend_id}', [UserController::class, 'add_friend'])->name('friend.store');
+});

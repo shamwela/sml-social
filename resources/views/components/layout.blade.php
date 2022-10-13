@@ -7,9 +7,7 @@
     </head>
 
     <body>
-
-      {{-- If logged in, show navigation --}}
-      @if (Cookie::get('user_id') and Cookie::get('email') and Cookie::get('password'))
+      @if (isLoggedIn())
         <x-navigation />
       @endif
 

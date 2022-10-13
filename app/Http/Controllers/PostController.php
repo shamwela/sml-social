@@ -92,10 +92,8 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Disallow updating image
         $post = Post::find($id);
         $post->text = $request->text;
-        $post->user_id = $request->cookie('user_id');
         $post->save();
         return redirect()->route('home');
     }

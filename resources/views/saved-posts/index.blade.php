@@ -12,7 +12,7 @@
         </a>
       </span>
 
-      <form action='{{ route("saved-posts.destroy", $post->id) }}' method='post'>
+      <form action='{{ route("unsave-post", $post->id) }}' method='post'>
         @method('delete')
         @csrf
         <button type='submit' class='bg-danger'>Unsave</button>
