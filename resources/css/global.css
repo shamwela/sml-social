@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-    @apply p-8 bg-gray-100 flex flex-col gap-y-4;
+    @apply bg-gray-100 flex flex-col gap-y-4;
 }
 
 h1,
@@ -17,7 +17,7 @@ h1 {
 }
 
 a {
-    @apply text-blue-600 hover:underline;
+    @apply text-accent hover:underline;
 }
 
 form {
@@ -27,8 +27,17 @@ form {
 input,
 button,
 .button,
-textarea {
+textarea,
+nav > a {
     @apply px-4 py-1;
+}
+
+nav {
+    @apply bg-white p-4;
+}
+
+nav > a {
+    @apply text-inherit hover:no-underline rounded-full hover:bg-gray-100;
 }
 
 input,
@@ -40,7 +49,12 @@ button,
 button,
 .button,
 [type="submit"] {
-    @apply bg-blue-600 text-white;
+    @apply bg-accent text-white;
+}
+
+input,
+textarea {
+    @apply outline-none hover:ring-2 focus:ring-2 ring-accent;
 }
 
 textarea {

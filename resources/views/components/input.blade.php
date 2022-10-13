@@ -14,9 +14,7 @@
       @if (!isset($optional))
         required
       @endif
-    >
-      {{ old($name) }}
-    </textarea>
+    >{{ old($name) }}</textarea>
   @else
     <input
       name={{ $name }}
