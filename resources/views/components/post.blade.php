@@ -17,8 +17,8 @@
           <button type='submit'>Save</button>
         </form>
 
-        {{-- If this post is the current user's post, he can edit or delete --}}
-        @if ($post->id === (int)Cookie::get('user_id'))
+        {{-- Only if the current user's the owner, he can edit or delete --}}
+        @if ($post->user_id === (int)Cookie::get('user_id'))
           <a href='{{ route("post.edit", $post->id) }}'>Edit</a>
           
           <form action='{{ route("post.destroy", $post->id) }}' method='post'>
