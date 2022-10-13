@@ -11,17 +11,22 @@
       <img src='{{ asset('images/'.$post->image_name) }}' alt='{{ $post->image_name }}' width='500'>
     @endif
 
-    {{-- If this post is the current user's post, he can edit or delete --}}
-    @if ($post->id === (int)Cookie::get('user_id'))
-      <div class='flex gap-x-4 items-center'>
+    <div class='flex gap-x-4 items-center'>
+        <form action='{{ route("save-post", $post->id) }}' method='post'>
+          @csrf
+          <button type='submit'>Save</button>
+        </form>
+
+        {{-- If this post is the current user's post, he can edit or delete --}}
+        @if ($post->id === (int)Cookie::get('user_id'))
           <a href='{{ route("post.edit", $post->id) }}'>Edit</a>
           
           <form action='{{ route("post.destroy", $post->id) }}' method='post'>
             @method('delete')
             @csrf
             <button onclick='return confirm("Are you sure?")' type='submit' class='bg-danger'>Delete</button>
-          <form>
+            <form>
+        @endif
       </div>
-    @endif
 
 </div>

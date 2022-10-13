@@ -42,6 +42,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate(['text' => 'required|max:500']);
         $post = new Post;
         $post->text = $request->text;
         $post->user_id = $request->cookie('user_id');

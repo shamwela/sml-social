@@ -7,7 +7,7 @@
     <textarea name={{ $name }} id={{ $name }} required>{{ old($name) }}</textarea>
   @else
     <input name={{ $name }} id={{ $name }} value='{{ old($name) }}' 
-      type={{ $type }} {{ !$optional && 'required' }}>
+      type={{ $type }} {{ isset($optional) ? '' : 'required' }}>
   @endif
 
   @error($name)
