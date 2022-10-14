@@ -10,6 +10,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SavedPostController;
+use App\Http\Controllers\LikeController;
 
 // If the user's already logged in, no need to register or login again
 Route::middleware(RedirectIfLoggedIn::class)->group(function () {
@@ -33,4 +34,7 @@ Route::middleware(RedirectIfLoggedOut::class)->group(function () {
 
   Route::resource('user', UserController::class);
   Route::post('friend/store/{friend_id}', [UserController::class, 'add_friend'])->name('friend.store');
+
+  Route::post('like/{post_id}', [LikeController::class, 'like'])->name('like');
+  Route::delete('unlike/{post_id}', [LikeController::class, 'unlike'])->name('unlike');
 });

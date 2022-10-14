@@ -12,6 +12,27 @@
     @endif
 
     <div class='flex gap-x-4 items-center'>
+        @if ($post->like_count < 1)
+        @elseif ($post->like_count === 1)
+          <span>{{ $post->like_count }} like</span>
+        @else
+          <span>{{ $post->like_count }} likes</span>
+        @endif
+        
+        
+        @if ($post->is_liked)
+          <form action='{{ route("unlike", $post->id) }}' method='post'>
+            @method('delete')
+            @csrf
+            <button type='submit' class='bg-danger'>Unlike</button>
+          </form>
+        @else
+          <form action='{{ route("like", $post->id) }}' method='post'>
+            @csrf
+            <button type='submit'>Like</button>
+          </form>
+        @endif
+
         <form action='{{ route("save-post", $post->id) }}' method='post'>
           @csrf
           <button type='submit'>Save</button>

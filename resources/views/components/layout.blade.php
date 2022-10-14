@@ -7,7 +7,7 @@
     </head>
 
     <body>
-      @if (isLoggedIn())
+      @if (is_logged_in())
         <x-navigation />
       @endif
 

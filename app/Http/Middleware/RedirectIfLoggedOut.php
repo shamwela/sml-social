@@ -9,7 +9,7 @@ class RedirectIfLoggedOut
 {
     public function handle(Request $request, Closure $next)
     {
-        if (!isLoggedIn()) {
+        if (!is_logged_in()) {
             return redirect()->route('auth.register.show');
         }
         return $next($request);

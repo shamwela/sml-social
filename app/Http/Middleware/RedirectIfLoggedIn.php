@@ -9,7 +9,7 @@ class RedirectIfLoggedIn
 {
     public function handle(Request $request, Closure $next, ...$guards)
     {
-        if (isLoggedIn()) {
+        if (is_logged_in()) {
             return redirect()->route('home');
         }
         return $next($request);

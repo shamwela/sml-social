@@ -29,6 +29,13 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('likes', function (Blueprint $table) {
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('post_id')->constrained('posts')->onDelete('cascade');
+            $table->primary(['user_id', 'post_id']);
+            $table->timestamps();
+        });
+
         Schema::create('friend_users', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('friend_id')->constrained('users')->onDelete('cascade');
@@ -50,6 +57,7 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('likes');
         Schema::dropIfExists('friend_users');
         Schema::dropIfExists('saved_posts');
         Schema::dropIfExists('posts');

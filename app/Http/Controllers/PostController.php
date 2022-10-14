@@ -5,22 +5,46 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\DB;
+use App\Models\Like;
 
 class PostController extends Controller
 {
+    private function add_like_data($post, $user_id)
+    {
+        // Check if the current user has liked it
+        $is_liked = Like::where('post_id', $post->id)
+            ->where('user_id', $user_id)
+            ->get()
+            ->isNotEmpty();
+        $post->is_liked = $is_liked;
+
+        $like_count = Like::where('post_id', $post->id)->count();
+        $post->like_count = $like_count;
+    }
+
     public function show_friend_posts(Request $request)
     {
         $user_id = $request->cookie('user_id');
         $posts = DB::select(
-            // Select the user's friends' posts
             DB::raw(
-                'select posts.id, text, image_name, posts.user_id, name as user_name from posts 
+                'select posts.id, text, image_name, posts.user_id, name as user_name
+                from posts
+
+                -- Only select friend posts, not all posts
                 inner join friend_users on friend_users.friend_id = posts.user_id
+
+                -- Also join with users table to get names
                 inner join users on users.id = posts.user_id
+
                 where friend_users.user_id = :user_id'
             ),
+            // Give input like this to prevent SQL injection
             array('user_id' => $user_id)
         );
+
+        foreach ($posts as $post) {
+            $this->add_like_data($post, $user_id);
+        }
         return view('home', compact('posts'));
     }
 
@@ -65,9 +89,11 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $post = Post::find($id);
+        $user_id = $request->cookie('user_id');
+        $this->add_like_data($post, $user_id);
         return view('post.show', compact('post'));
     }
 
