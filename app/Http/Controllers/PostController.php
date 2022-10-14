@@ -39,7 +39,7 @@ class PostController extends Controller
                 where friend_users.user_id = :user_id'
             ),
             // Give input like this to prevent SQL injection
-            array('user_id' => $user_id)
+            compact('user_id')
         );
 
         foreach ($posts as $post) {
@@ -91,8 +91,28 @@ class PostController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $post = Post::find($id);
         $user_id = $request->cookie('user_id');
+        $post_id = $id;
+        $posts = DB::select(
+            DB::raw(
+                'select posts.id, text, image_name, posts.user_id, name as user_name
+                from posts
+
+                -- Only select friend posts, not all posts
+                inner join friend_users on friend_users.friend_id = posts.user_id
+
+                -- Also join with users table to get names
+                inner join users on users.id = posts.user_id
+
+                where friend_users.user_id = :user_id
+                and posts.id = :post_id'
+            ),
+            // Give input like this to prevent SQL injection
+            compact('user_id', 'post_id')
+        );
+
+        // Since post ID is unique, there'll be only one post
+        $post = $posts[0];
         $this->add_like_data($post, $user_id);
         return view('post.show', compact('post'));
     }
