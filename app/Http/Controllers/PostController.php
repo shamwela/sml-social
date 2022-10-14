@@ -111,7 +111,7 @@ class PostController extends Controller
             compact('user_id', 'post_id')
         );
 
-        // Since post ID is unique, there'll be only one post
+        // Since the post ID is unique, there'll be only one post
         $post = $posts[0];
         $this->add_like_data($post, $user_id);
         return view('post.show', compact('post'));
