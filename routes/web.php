@@ -12,6 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SavedPostController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\SearchController;
 
 // If the user's already logged in, no need to register or login again
 Route::middleware(RedirectIfLoggedIn::class)->group(function () {
@@ -40,4 +41,6 @@ Route::middleware(RedirectIfLoggedOut::class)->group(function () {
   Route::delete('unlike/{post_id}', [LikeController::class, 'unlike'])->name('unlike');
 
   Route::post('comment/{post_id}', [CommentController::class, 'store'])->name('comment.store');
+
+  Route::get('search', [SearchController::class, 'show'])->name('search');
 });

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang='en'>
     <head>
 	    <title>{{ $title }}</title>
       <meta name='description' content='{{ $title }}'>
+      <meta name='viewport' content='width=device-width, initial-scale=1'>
       @vite('resources/css/global.css')
     </head>
 

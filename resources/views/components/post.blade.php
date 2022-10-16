@@ -27,7 +27,7 @@
       @endif
     </div>
 
-    <div class='flex gap-x-4 items-center'>
+    <div class='flex gap-x-4 justify-between items-center'>
         
         @if ($post->is_liked)
           <form action='{{ route("unlike", $post->id) }}' method='post'>
@@ -49,7 +49,7 @@
 
         {{-- Only if the current user's the owner, he can edit or delete --}}
         @if ($post->user_id === (int)Cookie::get('user_id'))
-          <a href='{{ route("post.edit", $post->id) }}'>Edit</a>
+          <a href='{{ route("post.edit", $post->id) }}' class='button'>Edit</a>
           
           <form action='{{ route("post.destroy", $post->id) }}' method='post'>
             @method('delete')
@@ -61,7 +61,7 @@
 
       <form action='{{ route("comment.store", $post->id) }}' method='post'>
         @csrf
-        <input name='text' placeholder='Write a comment...' type='text' class='bg-gray-100' required>
+        <input name='text' placeholder='Write a comment...' type='text' class='bg-gray-100' autocomplete='off' required>
       </form>
 
       {{-- Only show comments in the post details page --}}

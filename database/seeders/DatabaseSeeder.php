@@ -19,13 +19,13 @@ class DatabaseSeeder extends Seeder
     {
         DB::table('users')->insert([
             'name' => 'Sha Mwe La',
-            'email' => 'shamwela@gmail.com',
+            'email' => 'shamwela@shamwela.com',
             'password' => Hash::make('password')
         ]);
 
         DB::table('users')->insert([
             'name' => 'Steve Jobs',
-            'email' => 'stevejobs@gmail.com',
+            'email' => 'stevejobs@apple.com',
             'password' => Hash::make('password')
         ]);
 

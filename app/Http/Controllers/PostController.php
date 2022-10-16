@@ -120,7 +120,8 @@ class PostController extends Controller
                 'select users.name as commentator_name, users.id as commentator_id, text
                 from comments
                 inner join users on users.id = comments.user_id
-                where comments.post_id = :post_id'
+                where comments.post_id = :post_id
+                order by comments.created_at desc'
             ),
             compact('post_id')
         );
