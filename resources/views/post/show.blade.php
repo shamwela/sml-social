@@ -1,3 +1,3 @@
-<x-layout title='Post'>
-  <x-post :$post />
+<x-layout title='Post details'>
+  <x-post :$post :$comments />
 </x-layout>

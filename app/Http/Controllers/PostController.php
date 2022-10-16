@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\DB;
 use App\Models\Like;
+use App\Models\Comment;
 
 class PostController extends Controller
 {
@@ -44,7 +45,10 @@ class PostController extends Controller
 
         foreach ($posts as $post) {
             $this->add_like_data($post, $user_id);
+
+            $post->comment_count = count(Comment::where('post_id', $post->id)->get());
         }
+
         return view('home', compact('posts'));
     }
 
@@ -91,30 +95,38 @@ class PostController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $user_id = $request->cookie('user_id');
         $post_id = $id;
         $posts = DB::select(
             DB::raw(
                 'select posts.id, text, image_name, posts.user_id, name as user_name
                 from posts
 
-                -- Only select friend posts, not all posts
-                inner join friend_users on friend_users.friend_id = posts.user_id
-
-                -- Also join with users table to get names
+                -- join with users table to get names
                 inner join users on users.id = posts.user_id
 
-                where friend_users.user_id = :user_id
-                and posts.id = :post_id'
+                where posts.id = :post_id'
             ),
             // Give input like this to prevent SQL injection
-            compact('user_id', 'post_id')
+            compact('post_id')
         );
 
         // Since the post ID is unique, there'll be only one post
         $post = $posts[0];
+        $user_id = $request->cookie('user_id');
         $this->add_like_data($post, $user_id);
-        return view('post.show', compact('post'));
+
+        $comments = DB::select(
+            DB::raw(
+                'select users.name as commentator_name, users.id as commentator_id, text
+                from comments
+                inner join users on users.id = comments.user_id
+                where comments.post_id = :post_id'
+            ),
+            compact('post_id')
+        );
+        $post->comment_count = count($comments);
+
+        return view('post.show', compact('post', 'comments'));
     }
 
     /**

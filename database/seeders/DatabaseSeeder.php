@@ -17,22 +17,49 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // Create separate seeders later
-        // Create 2 users
-        for ($count = 1; $count <= 2; $count++) {
-            DB::table('users')->insert([
-                'name' => 'User ' . $count,
-                'email' => 'user' . $count . '@gmail.com',
-                'password' => Hash::make('password')
-            ]);
-        }
+        DB::table('users')->insert([
+            'name' => 'Sha Mwe La',
+            'email' => 'shamwela@gmail.com',
+            'password' => Hash::make('password')
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'Steve Jobs',
+            'email' => 'stevejobs@gmail.com',
+            'password' => Hash::make('password')
+        ]);
 
         DB::table('posts')->insert([
-            'text' => 'Post of user 2',
+            'text' => 'Hi this is my app.',
+            'user_id' => 1
+        ]);
+
+        DB::table('posts')->insert([
+            'text' => 'Focus is about saying no.',
             'user_id' => 2
         ]);
 
-        // Make them friends
+        DB::table('posts')->insert([
+            'text' => 'I wanna eat pizza.',
+            'user_id' => 2
+        ]);
+
+        DB::table('likes')->insert([
+            'user_id' => 1,
+            'post_id' => 1
+        ]);
+
+        DB::table('comments')->insert([
+            'user_id' => 1,
+            'post_id' => 1,
+            'text' => 'Test comment'
+        ]);
+        DB::table('comments')->insert([
+            'user_id' => 2,
+            'post_id' => 2,
+            'text' => 'Test comment'
+        ]);
+
         DB::table('friend_users')->insert([
             'user_id' => 1,
             'friend_id' => 2

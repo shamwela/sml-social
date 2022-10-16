@@ -36,6 +36,14 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('comments', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('post_id')->constrained('posts')->onDelete('cascade');
+            $table->string('text', 500);
+            $table->timestamps();
+        });
+
         Schema::create('friend_users', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('friend_id')->constrained('users')->onDelete('cascade');
@@ -58,6 +66,7 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('likes');
+        Schema::dropIfExists('comments');
         Schema::dropIfExists('friend_users');
         Schema::dropIfExists('saved_posts');
         Schema::dropIfExists('posts');
