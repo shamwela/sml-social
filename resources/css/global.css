@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+*,
+::before,
+::after {
+    @apply accent-accent;
+}
+
+::selection {
+    @apply bg-accent text-white;
+}
+
 body {
     @apply bg-gray-100 flex flex-col gap-y-4 min-h-screen;
 }
@@ -34,6 +44,10 @@ nav > a {
 
 nav > a {
     @apply text-inherit hover:no-underline rounded-full hover:bg-gray-100;
+}
+
+.post > a {
+    @apply text-inherit;
 }
 
 input,

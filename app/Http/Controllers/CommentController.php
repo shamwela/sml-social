@@ -18,7 +18,6 @@ class CommentController extends Controller
         } catch (Exception $exception) {
             dd($exception);
         }
-        // This redirect might not work
         return redirect()->route('post.show', $post_id);
     }
 }

@@ -1,7 +1,20 @@
 <x-layout title='Search'>
   <form action='{{ route("search") }}' method='get'>
-    <input name='query' placeholder='Search user' required class='bg-white' autocomplete='off'
-    value='{{ app('request')->input('query') }}'>
+    <input
+      name='query'
+      placeholder='Search user'
+      class='bg-white'
+      autocomplete='off'
+      required
+  
+      {{-- If already searched, re-fill the old query --}}
+      @if (app('request')->input('query'))
+        value='{{ app('request')->input('query') }}'
+      {{-- If not searched yet, focus automatically --}}
+      @else    
+        autofocus
+      @endif
+    >
   </form>
 
   @if (!isset($users))

@@ -1,4 +1,4 @@
-<div class='bg-white p-4 rounded-lg flex flex-col gap-y-4'>
+<div class='bg-white p-4 rounded-lg flex flex-col gap-y-4 post'>
     @if ($post->user_id and $post->user_name)
       <a href={{ route('user.show', $post->user_id) }}>
         <strong>{{ $post->user_name }}</strong>
@@ -11,7 +11,7 @@
       <img src='{{ asset('images/'.$post->image_name) }}' alt='{{ $post->image_name }}' width='500'>
     @endif
 
-    <div class='flex gap-x-4'>
+    <a href='{{ route("post.show", $post->id) }}' class='flex gap-x-4'>
       @if ($post->like_count < 1)
       @elseif ($post->like_count === 1)
         <span>{{ $post->like_count }} like</span>
@@ -25,10 +25,9 @@
       @else
         <span>{{ $post->comment_count }} comments</span>
       @endif
-    </div>
+    </a>
 
-    <div class='flex gap-x-4 justify-between items-center'>
-        
+    <div class='flex gap-x-4 items-center'>
         @if ($post->is_liked)
           <form action='{{ route("unlike", $post->id) }}' method='post'>
             @method('delete')

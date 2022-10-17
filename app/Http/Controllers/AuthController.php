@@ -21,15 +21,6 @@ class AuthController extends Controller
             'password' => self::$password_validation
         ]);
 
-        $existing_user = User::firstWhere('email', $request->email);
-        if ($existing_user) {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->withErrors(
-                    ['email' => 'You already have an account with the email ' . $request->email . '. Please login instead.']
-                );
-        }
         $hashed_password = Hash::make($request->password);
         $user = User::create([
             'name' => $request->name,
@@ -77,6 +68,6 @@ class AuthController extends Controller
         Cookie::queue(Cookie::forget('user_id'));
         Cookie::queue(Cookie::forget('email'));
         Cookie::queue(Cookie::forget('password'));
-        return redirect()->route('home');
+        return redirect()->route('auth.login.show');
     }
 }
