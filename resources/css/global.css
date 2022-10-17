@@ -42,6 +42,11 @@ nav > a {
     @apply px-4 py-1;
 }
 
+/* Elements that should look like a button */
+.button {
+    @apply cursor-pointer;
+}
+
 nav > a {
     @apply text-inherit hover:no-underline rounded-full hover:bg-gray-100;
 }

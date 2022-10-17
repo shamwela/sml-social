@@ -44,4 +44,5 @@ Route::middleware(RedirectIfLoggedOut::class)->group(function () {
 
   Route::get('search', [SearchController::class, 'show'])->name('search');
   Route::view('menu', 'menu')->name('menu');
+  Route::post('profile-picture', [UserController::class, 'update_profile_picture'])->name('profile-picture');
 });
