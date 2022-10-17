@@ -5,24 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\DB;
-use App\Models\Like;
+use App\Http\Controllers\LikeController;
 use App\Models\Comment;
 
 class PostController extends Controller
 {
-    private function add_like_data($post, $user_id)
-    {
-        // Check if the current user has liked it
-        $is_liked = Like::where('post_id', $post->id)
-            ->where('user_id', $user_id)
-            ->get()
-            ->isNotEmpty();
-        $post->is_liked = $is_liked;
-
-        $like_count = Like::where('post_id', $post->id)->count();
-        $post->like_count = $like_count;
-    }
-
     public function show_friend_posts(Request $request)
     {
         $user_id = $request->cookie('user_id');
@@ -44,7 +31,7 @@ class PostController extends Controller
         );
 
         foreach ($posts as $post) {
-            $this->add_like_data($post, $user_id);
+            app(LikeController::class)->add_like_data($post, $user_id);
 
             $post->comment_count = count(Comment::where('post_id', $post->id)->get());
         }
@@ -52,22 +39,11 @@ class PostController extends Controller
         return view('home', compact('posts'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('post.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $request->validate(['text' => 'required|max:500']);
@@ -87,12 +63,6 @@ class PostController extends Controller
         return redirect()->route('home');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show(Request $request, $id)
     {
         $post_id = $id;
@@ -113,7 +83,7 @@ class PostController extends Controller
         // Since the post ID is unique, there'll be only one post
         $post = $posts[0];
         $user_id = $request->cookie('user_id');
-        $this->add_like_data($post, $user_id);
+        app(LikeController::class)->add_like_data($post, $user_id);
 
         $comments = DB::select(
             DB::raw(
@@ -130,25 +100,12 @@ class PostController extends Controller
         return view('post.show', compact('post', 'comments'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $post = Post::find($id);
         return view('post.edit', compact('post'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $post = Post::find($id);
@@ -157,12 +114,6 @@ class PostController extends Controller
         return redirect()->route('home');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         Post::destroy($id);

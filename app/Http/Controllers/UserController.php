@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\FriendUser;
 use Exception;
+use App\Http\Controllers\LikeController;
+use App\Models\Comment;
 
 class UserController extends Controller
 {
@@ -50,8 +52,14 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
+        $user_id = $id;
+        $user = User::find($user_id);
         $posts = Post::where('user_id', $id)->get();
+        foreach ($posts as $post) {
+            $post->user_name = $user->name;
+            app(LikeController::class)->add_like_data($post, $user_id);
+            $post->comment_count = count(Comment::where('post_id', $post->id)->get());
+        }
         return view('user.show', compact('user', 'posts'));
     }
 

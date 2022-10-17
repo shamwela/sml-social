@@ -18,10 +18,9 @@ class SavedPostController extends Controller
                 'post_id' => $post_id
             ]);
         } catch (Exception $exception) {
-            // Improve exception handling later
-            dd($exception);
+            return redirect()->back();
         }
-        return redirect()->route('home');
+        return redirect()->back();
     }
 
     public function index(Request $request)

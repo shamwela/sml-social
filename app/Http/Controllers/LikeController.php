@@ -31,4 +31,17 @@ class LikeController extends Controller
         }
         return redirect()->route('post.show', $post_id);
     }
+
+    public function add_like_data($post, $user_id)
+    {
+        // Check if the current user has liked it
+        $is_liked = Like::where('post_id', $post->id)
+            ->where('user_id', $user_id)
+            ->get()
+            ->isNotEmpty();
+        $post->is_liked = $is_liked;
+
+        $like_count = Like::where('post_id', $post->id)->count();
+        $post->like_count = $like_count;
+    }
 }
