@@ -14,9 +14,9 @@ class LikeController extends Controller
         try {
             Like::create(compact('user_id', 'post_id'));
         } catch (Exception $exception) {
-            dd($exception);
+            return redirect()->route('post.show', $post_id);
         }
-        return redirect()->back();
+        return redirect()->route('post.show', $post_id);
     }
 
     public function unlike(Request $request, $post_id)
@@ -27,8 +27,8 @@ class LikeController extends Controller
                 ->where('post_id', $post_id)
                 ->delete();
         } catch (Exception $exception) {
-            dd($exception);
+            return redirect()->route('post.show', $post_id);
         }
-        return redirect()->back();
+        return redirect()->route('post.show', $post_id);
     }
 }

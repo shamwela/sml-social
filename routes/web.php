@@ -43,4 +43,5 @@ Route::middleware(RedirectIfLoggedOut::class)->group(function () {
   Route::post('comment/{post_id}', [CommentController::class, 'store'])->name('comment.store');
 
   Route::get('search', [SearchController::class, 'show'])->name('search');
+  Route::view('menu', 'menu')->name('menu');
 });
