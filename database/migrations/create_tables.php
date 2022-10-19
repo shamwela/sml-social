@@ -18,14 +18,14 @@ return new class extends Migration
             $table->string('name', 50);
             $table->string('email', 50)->unique();
             $table->string('password', 100);
-            $table->string('profile_picture_name', 100)->nullable();
+            $table->string('profile_picture_url', 100)->nullable();
             $table->timestamps();
         });
 
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('text', 500);
-            $table->string('image_name', 100)->nullable();
+            $table->string('image_url', 100)->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

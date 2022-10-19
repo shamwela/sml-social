@@ -2,8 +2,8 @@
   @foreach ($saved_posts as $post)
     <div class='flex flex-col gap-y-4 bg-white p-4 rounded-lg'>
       <a href='{{ route("post.show", $post->id) }}'>{{ $post->text }}</a>
-      @if ($post->image_name)
-        <img src='{{ asset('images/'.$post->image_name) }}' alt='{{ $post->image_name }}' width='500'>
+      @if ($post->image_url)
+        <img src='{{ $post->image_url }}' alt='Post image' width='500'>
       @endif
 
       <span>Saved from

@@ -1,6 +1,7 @@
 {
     "require": {
         "php": "^8.1.0",
+        "cloudinary-labs/cloudinary-laravel": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",

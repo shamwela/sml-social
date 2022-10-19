@@ -33,7 +33,7 @@ class SavedPostController extends Controller
                 // Input user ID is current user ID
                 // Output user ID is post owner ID
                 DB::raw('
-                    select users.id as user_id, users.name as user_name, posts.id, posts.text, posts.image_name
+                    select users.id as user_id, users.name as user_name, posts.id, posts.text, posts.image_url
                     from saved_posts
                     inner join posts on saved_posts.post_id = posts.id
                     inner join users on posts.user_id = users.id

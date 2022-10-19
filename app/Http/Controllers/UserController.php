@@ -121,32 +121,15 @@ class UserController extends Controller
 
     public function update_profile_picture(Request $request)
     {
+        $user_id = $request->cookie('user_id');
         $request->validate(
             ['profile_picture' => 'required']
         );
-        $user_id = $request->cookie('user_id');
-        $profile_picture = $request->profile_picture;
-
-        // For example, jpg, png
-        $extension = pathinfo($profile_picture->getClientOriginalName(), PATHINFO_EXTENSION);
-        $folder_path = public_path() . '/profile-pictures/';
-        $profile_picture_name = $user_id . '.' . $extension;
-        $full_path = $folder_path . $profile_picture_name;
-
-        try {
-            $user = User::find($user_id);
-            $user->profile_picture_name = $profile_picture_name;
-            $user->save();
-        } catch (Exception $exception) {
-            //
-        }
-
-        // If the profile picture already exists, delete it
-        if (file_exists($full_path)) {
-            unlink($full_path);
-        }
-        // Store in the file system
-        $profile_picture->move($folder_path, $profile_picture_name);
+        $result = $request->profile_picture->storeOnCloudinary('SML Social');
+        $image_url = $result->getSecurePath();
+        $user = User::find($user_id);
+        $user->profile_picture_url = $image_url;
+        $user->save();
         return redirect()->back();
     }
 }

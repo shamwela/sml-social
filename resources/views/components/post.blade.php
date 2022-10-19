@@ -7,8 +7,8 @@
 
     <a href='{{ route("post.show", $post->id) }}'>{{ $post->text }}</a>
     
-    @if ($post->image_name)
-      <img src='{{ asset('images/'.$post->image_name) }}' alt='{{ $post->image_name }}' width='500'>
+    @if ($post->image_url)
+      <img src='{{ $post->image_url }}' alt='Image posted by {{ $post->user_name }}' width='500'>
     @endif
 
     <a href='{{ route("post.show", $post->id) }}' class='flex gap-x-4'>

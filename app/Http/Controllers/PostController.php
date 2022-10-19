@@ -15,7 +15,7 @@ class PostController extends Controller
         $user_id = $request->cookie('user_id');
         $posts = DB::select(
             DB::raw(
-                'select posts.id, text, image_name, posts.user_id, name as user_name
+                'select posts.id, text, image_url, posts.user_id, name as user_name
                 from posts
 
                 -- Only select friend posts, not all posts
@@ -51,13 +51,9 @@ class PostController extends Controller
         $post->text = $request->text;
         $post->user_id = $request->cookie('user_id');
         if ($request->hasFile('image')) {
-            $image = $request->image;
-            // Make the image name unique by adding year, month, date, hour and minute.
-            $image_name = date('YmdHi') . $image->getClientOriginalName();
-            // Store in the file system
-            $image->move(public_path() . '/images/', $image_name);
-            // Store in the database
-            $post->image_name = $image_name;
+            $result = $request->image->storeOnCloudinary('SML Social');
+            $image_url = $result->getSecurePath();
+            $post->image_url = $image_url;
         }
         $post->save();
         return redirect()->route('home');
@@ -68,7 +64,7 @@ class PostController extends Controller
         $post_id = $id;
         $posts = DB::select(
             DB::raw(
-                'select posts.id, text, image_name, posts.user_id, name as user_name
+                'select posts.id, text, image_url, posts.user_id, name as user_name
                 from posts
 
                 -- join with users table to get names

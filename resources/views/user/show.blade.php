@@ -1,9 +1,9 @@
 <x-layout :title='$user->name'>
   <div class='flex flex-col gap-y-4 items-center'>
     
-    @if ($user->profile_picture_name)
+    @if ($user->profile_picture_url)
       <img
-        src='{{ asset("profile-pictures/" . $user->profile_picture_name) }}'
+        src='{{ $user->profile_picture_url }}'
        
         {{-- For example, Sha Mwe La's profile picture --}}
         alt='{{ $user->name . "'s profile picture" }}'
