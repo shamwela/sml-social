@@ -3,6 +3,7 @@
     <input
       name='query'
       placeholder='Search user'
+      type='search'
       class='bg-white'
       autocomplete='off'
       required
