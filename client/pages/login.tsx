@@ -7,30 +7,28 @@ import { useRouter } from 'next/router'
 import type { AxiosResponse } from 'axios'
 import toast from 'react-hot-toast'
 
-const Register = () => {
+const Login = () => {
   const router = useRouter()
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const { elements } = event.currentTarget
-    const name = (elements.namedItem('name') as HTMLInputElement).value.trim()
     const email = (elements.namedItem('email') as HTMLInputElement).value
       .trim()
       .toLowerCase()
     const password = (elements.namedItem('password') as HTMLInputElement).value
 
-    let registerPromise: Promise<AxiosResponse<any, any>>
+    let loginPromise: Promise<AxiosResponse<any, any>>
     try {
-      registerPromise = axios.post('/api/register', { name, email, password })
+      loginPromise = axios.post('/api/login', { email, password })
 
-      toast.promise(registerPromise, {
-        loading: 'Registering',
-        success: 'Registered.',
+      toast.promise(loginPromise, {
+        loading: 'Logging in',
+        success: 'Logged in.',
         error: (error) => {
           const { message } = error.response.data
           return (
-            message ||
-            "Couldn't sign up. Please make sure your email is correct."
+            message || "Couldn't log in. Please check the email and password."
           )
         },
       })
@@ -47,22 +45,21 @@ const Register = () => {
 
   return (
     <>
-      <Head title='Register' />
+      <Head title='Login' />
       <form onSubmit={handleSubmit}>
-        <Input name='name' type='text' />
         <Input name='email' type='email' />
         <Input name='password' type='password' />
-        <button type='submit'>Register</button>
+        <button type='submit'>Login</button>
       </form>
 
       <p className='text-center'>
-        Already have an account?{' '}
-        <Link href='/login'>
-          <a>Login</a>
+        Don&apos;t have an account?{' '}
+        <Link href='/register'>
+          <a>Register</a>
         </Link>
       </p>
     </>
   )
 }
 
-export default Register
+export default Login
