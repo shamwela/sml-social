@@ -2,6 +2,6 @@ import axiosLibrary from 'axios'
 import { backendUrl } from './backendUrl'
 
 export const axios = axiosLibrary.create({
-  baseURL: backendUrl,
+  baseURL: backendUrl + '/api',
   withCredentials: true,
 })

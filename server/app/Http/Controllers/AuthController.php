@@ -5,12 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    private static $email_validation = 'required|string|min:5|max:50|email';
+    private static $email_validation = 'required|email|min:5|max:50';
     private static $password_validation = 'required|string|min:8|max:100';
 
     public function register(Request $request)
@@ -22,39 +20,34 @@ class AuthController extends Controller
             'password' => self::$password_validation
         ]);
 
+        // If the database is hacked, the hacker won't know the passwords
         $hashed_password = Hash::make($request->password);
-        $user = User::create([
+
+        User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => $hashed_password
         ]);
-
-        return response()->json([
-            'status' => true,
-            'message' => 'User Created Successfully',
-            'token' => $user->createToken('API TOKEN')->plainTextToken
-        ], 200);
+        return response()->json('success', 200);
     }
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
+        $request->validate([
             'email' => self::$email_validation,
             'password' => self::$password_validation
         ]);
-        if (!Auth::attempt($credentials)) {
-            throw ValidationException::withMessages([
-                'email' => [
-                    __('auth.failed')
-                ]
-            ]);
+        $email = $request->email;
+        $password = $request->password;
+        $user = User::where('email', $email)->first();
+        if (!$user) {
+            // return error
+            return;
         }
-
-        return $request->user();
-    }
-
-    public function logout()
-    {
-        return Auth::logout();
+        if (!Hash::check($password, $user->password)) {
+            // Wrong password
+            return;
+        }
+        return response()->json('success', 200);
     }
 }

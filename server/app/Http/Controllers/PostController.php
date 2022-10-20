@@ -7,12 +7,25 @@ use App\Models\Post;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\LikeController;
 use App\Models\Comment;
+use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\Hash;
 
 class PostController extends Controller
 {
-    public function show_friend_posts(Request $request)
+    public function get_friend_posts(Request $request)
     {
-        $user_id = $request->cookie('user_id');
+        $email = $request->email;
+        $password = $request->password;
+        $user = User::where('email', $email)->first();
+        $user_id  = $user->id;
+        if (!$user) {
+            // return error
+            return;
+        }
+        if (!Hash::check($password, $user->password)) {
+            // Wrong password
+            return;
+        }
         $posts = DB::select(
             DB::raw(
                 'select posts.id, text, image_url, posts.user_id, name as user_name
@@ -36,12 +49,7 @@ class PostController extends Controller
             $post->comment_count = count(Comment::where('post_id', $post->id)->get());
         }
 
-        return view('home', compact('posts'));
-    }
-
-    public function create()
-    {
-        return view('post.create');
+        return response($posts);
     }
 
     public function store(Request $request)
