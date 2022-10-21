@@ -7,9 +7,18 @@ use App\Models\Post;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\LikeController;
 use App\Models\Comment;
+use App\Models\SavedPost;
 
 class PostController extends Controller
 {
+    private function is_saved($post_id, $user_id)
+    {
+        return SavedPost::where('post_id', $post_id)
+            ->where('user_id', $user_id)
+            ->get()
+            ->isNotEmpty();
+    }
+
     public function show_friend_posts(Request $request)
     {
         $user_id = $request->cookie('user_id');
@@ -34,6 +43,8 @@ class PostController extends Controller
             app(LikeController::class)->add_like_data($post, $user_id);
 
             $post->comment_count = count(Comment::where('post_id', $post->id)->get());
+
+            $post->is_saved = $this->is_saved($post->id, $user_id);
         }
 
         return view('home', compact('posts'));
@@ -49,14 +60,15 @@ class PostController extends Controller
         $request->validate(['text' => 'required|max:500']);
         $post = new Post;
         $post->text = $request->text;
-        $post->user_id = $request->cookie('user_id');
+        $user_id = $request->cookie('user_id');
+        $post->user_id = $user_id;
         if ($request->hasFile('image')) {
             $result = $request->image->storeOnCloudinary('SML Social');
             $image_url = $result->getSecurePath();
             $post->image_url = $image_url;
         }
         $post->save();
-        return redirect()->route('home');
+        return redirect()->route('user.show', $user_id);
     }
 
     public function show(Request $request, $id)
@@ -92,6 +104,7 @@ class PostController extends Controller
             compact('post_id')
         );
         $post->comment_count = count($comments);
+        $post->is_saved = $this->is_saved($post_id, $user_id);
 
         return view('post.show', compact('post', 'comments'));
     }
@@ -107,12 +120,13 @@ class PostController extends Controller
         $post = Post::find($id);
         $post->text = $request->text;
         $post->save();
-        return redirect()->route('home');
+        $user_id = $request->cookie('user_id');
+        return redirect()->route('user.show', $user_id);
     }
 
     public function destroy($id)
     {
         Post::destroy($id);
-        return redirect()->route('home');
+        return redirect()->back();
     }
 }

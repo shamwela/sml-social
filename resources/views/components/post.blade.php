@@ -41,10 +41,18 @@
           </form>
         @endif
 
-        <form action='{{ route("save-post", $post->id) }}' method='post'>
-          @csrf
-          <button type='submit'>Save</button>
-        </form>
+        @if ($post->is_saved)
+          <form action='{{ route("unsave-post", $post->id) }}' method='post'>
+            @method('delete')
+            @csrf
+            <button type='submit' class='bg-danger'>Unsave</button>
+          </form>
+        @else
+          <form action='{{ route("save-post", $post->id) }}' method='post'>
+            @csrf
+            <button type='submit'>Save</button>
+          </form>
+        @endif
 
         {{-- Only if the current user's the owner, he can edit or delete --}}
         @if ($post->user_id === (int)Cookie::get('user_id'))

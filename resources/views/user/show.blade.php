@@ -17,14 +17,16 @@
       >
     @endif
     
-    <form action='{{ route("profile-picture") }}' method='post' enctype='multipart/form-data'>
-      @csrf
-      <label for='profile_picture' class='button'>Update profile picture</label>
-      <input name='profile_picture' id='profile_picture' type='file' class='hidden' onchange='form.submit()' required>
-    </form>
+    @if ($user->id === (int)Cookie::get('user_id'))
+      <form action='{{ route("profile-picture") }}' method='post' enctype='multipart/form-data'>
+        @csrf
+        <label for='profile_picture' class='button'>Update profile picture</label>
+        <input name='profile_picture' id='profile_picture' type='file' class='hidden' onchange='form.submit()' required>
+      </form>
+    @endif
   </div>
   
-  @if (!$posts->count())
+  @if ($posts->count() === 0)
     <p class='text-center'>No posts.</p>
   @endif
 

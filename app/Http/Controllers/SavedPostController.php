@@ -58,6 +58,6 @@ class SavedPostController extends Controller
         } catch (Exception $exception) {
             dd($exception);
         }
-        return redirect()->route('saved-posts.index');
+        return redirect()->back();
     }
 }
