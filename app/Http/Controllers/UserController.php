@@ -54,7 +54,9 @@ class UserController extends Controller
     {
         $user_id = $id;
         $user = User::find($user_id);
-        $posts = Post::where('user_id', $id)->get();
+        $posts = Post::where('user_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
         foreach ($posts as $post) {
             $post->user_name = $user->name;
             app(LikeController::class)->add_like_data($post, $user_id);

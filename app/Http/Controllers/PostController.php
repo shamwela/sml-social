@@ -33,7 +33,8 @@ class PostController extends Controller
                 -- Also join with users table to get names
                 inner join users on users.id = posts.user_id
 
-                where friend_users.user_id = :user_id'
+                where friend_users.user_id = :user_id
+                order by posts.created_at desc'
             ),
             // Give input like this to prevent SQL injection
             compact('user_id')
