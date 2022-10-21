@@ -12,6 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SavedPostController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FriendController;
 use App\Http\Controllers\SearchController;
 
 // If the user's already logged in, no need to register or login again
@@ -35,7 +36,10 @@ Route::middleware(RedirectIfLoggedOut::class)->group(function () {
   Route::delete('unsave-post/{post_id}', [SavedPostController::class, 'destroy'])->name('unsave-post');
 
   Route::resource('user', UserController::class);
-  Route::post('friend/store/{friend_id}', [UserController::class, 'add_friend'])->name('friend.store');
+  Route::post('friend/add/{friend_id}', [FriendController::class, 'add'])->name('friend.add');
+  Route::post('friend/confirm/{friend_id}', [FriendController::class, 'confirm'])->name('friend.confirm');
+  Route::delete('friend/delete/{friend_id}', [FriendController::class, 'delete'])->name('friend.delete');
+  Route::get('friend-requests', [FriendController::class, 'show_friend_requests'])->name('friend-requests');
 
   Route::post('like/{post_id}', [LikeController::class, 'like'])->name('like');
   Route::delete('unlike/{post_id}', [LikeController::class, 'unlike'])->name('unlike');

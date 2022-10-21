@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Post;
-use App\Models\FriendUser;
-use Exception;
 use App\Http\Controllers\LikeController;
 use App\Models\Comment;
+use App\Models\Friend;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -17,9 +17,27 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $users = User::all();
+        $user_id = $request->cookie('user_id');
+        foreach ($users as $user) {
+            // Check if friends
+            // Query builder would return an array no matter how many record it gets
+            $friendArray = Friend::where('user_id', $user_id)
+                // the other user
+                ->where('friend_id', $user->id)
+                ->get();
+
+            if ($friendArray->isEmpty()) {
+                $user->status = 'stranger';
+            } elseif ($friendArray[0]->confirmed == 0) {
+                $user->status = 'requested';
+            } else {
+                $user->status = 'friend';
+            }
+        }
+
         return view('user.index', compact('users'));
     }
 
@@ -100,28 +118,6 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function add_friend(Request $request, $friend_id)
-    {
-        $user_id = $request->cookie('user_id');
-        try {
-            FriendUser::insert([
-                [
-                    'user_id' => $user_id,
-                    'friend_id' => $friend_id,
-                ],
-                [
-                    // Also save the other way
-                    // Because this takes more storage, improve later
-                    'user_id' => $friend_id,
-                    'friend_id' => $user_id,
-                ],
-            ]);
-        } catch (Exception $exception) {
-            return redirect()->route('user.index');
-        }
-        return redirect()->route('user.index');
     }
 
     public function update_profile_picture(Request $request)
