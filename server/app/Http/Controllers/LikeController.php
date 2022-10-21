@@ -8,40 +8,40 @@ use Exception;
 
 class LikeController extends Controller
 {
-    public function like(Request $request, $post_id)
+    public function like(Request $request, $postId)
     {
-        $user_id = $request->cookie('user_id');
+        $userId = $request->cookie('userId');
         try {
-            Like::create(compact('user_id', 'post_id'));
+            Like::create(compact('userId', 'postId'));
         } catch (Exception $exception) {
-            return redirect()->route('post.show', $post_id);
+            return redirect()->route('post.show', $postId);
         }
-        return redirect()->route('post.show', $post_id);
+        return redirect()->route('post.show', $postId);
     }
 
-    public function unlike(Request $request, $post_id)
+    public function unlike(Request $request, $postId)
     {
-        $user_id = $request->cookie('user_id');
+        $userId = $request->cookie('userId');
         try {
-            Like::where('user_id', $user_id)
-                ->where('post_id', $post_id)
+            Like::where('userId', $userId)
+                ->where('postId', $postId)
                 ->delete();
         } catch (Exception $exception) {
-            return redirect()->route('post.show', $post_id);
+            return redirect()->route('post.show', $postId);
         }
-        return redirect()->route('post.show', $post_id);
+        return redirect()->route('post.show', $postId);
     }
 
-    public function add_like_data($post, $user_id)
+    public function addLikeData($post, $userId)
     {
         // Check if the current user has liked it
-        $is_liked = Like::where('post_id', $post->id)
-            ->where('user_id', $user_id)
+        $isLiked = Like::where('postId', $post->id)
+            ->where('userId', $userId)
             ->get()
             ->isNotEmpty();
-        $post->is_liked = $is_liked;
+        $post->isLiked = $isLiked;
 
-        $like_count = Like::where('post_id', $post->id)->count();
-        $post->like_count = $like_count;
+        $likeCount = Like::where('postId', $post->id)->count();
+        $post->likeCount = $likeCount;
     }
 }

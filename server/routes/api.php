@@ -8,4 +8,4 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout']);
 
-Route::get('posts', [PostController::class, 'get_friend_posts']);
+Route::get('posts', [PostController::class, 'getFriendPosts']);

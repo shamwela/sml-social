@@ -20,7 +20,7 @@ const Login = () => {
 
     let loginPromise: Promise<AxiosResponse<any, any>>
     try {
-      loginPromise = axios.post('/api/login', { email, password })
+      loginPromise = axios.post('/login', { email, password })
 
       toast.promise(loginPromise, {
         loading: 'Logging in',
@@ -37,7 +37,8 @@ const Login = () => {
       return
     }
 
-    localStorage.setItem('email', email)
+    const { data: userId } = await loginPromise
+    localStorage.setItem('userId', userId)
     localStorage.setItem('password', password)
     await router.push('/')
     router.reload()

@@ -52,13 +52,13 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user_id = $id;
-        $user = User::find($user_id);
-        $posts = Post::where('user_id', $id)->get();
+        $userId = $id;
+        $user = User::find($userId);
+        $posts = Post::where('userId', $id)->get();
         foreach ($posts as $post) {
-            $post->user_name = $user->name;
-            app(LikeController::class)->add_like_data($post, $user_id);
-            $post->comment_count = count(Comment::where('post_id', $post->id)->get());
+            $post->userName = $user->name;
+            app(LikeController::class)->addLikeData($post, $userId);
+            $post->commentCount = count(Comment::where('postId', $post->id)->get());
         }
         return view('user.show', compact('user', 'posts'));
     }
@@ -97,20 +97,20 @@ class UserController extends Controller
         //
     }
 
-    public function add_friend(Request $request, $friend_id)
+    public function add_friend(Request $request, $friendId)
     {
-        $user_id = $request->cookie('user_id');
+        $userId = $request->cookie('userId');
         try {
             FriendUser::insert([
                 [
-                    'user_id' => $user_id,
-                    'friend_id' => $friend_id,
+                    'userId' => $userId,
+                    'friendId' => $friendId,
                 ],
                 [
                     // Also save the other way
                     // Because this takes more storage, improve later
-                    'user_id' => $friend_id,
-                    'friend_id' => $user_id,
+                    'userId' => $friendId,
+                    'friendId' => $userId,
                 ],
             ]);
         } catch (Exception $exception) {
@@ -119,16 +119,16 @@ class UserController extends Controller
         return redirect()->route('user.index');
     }
 
-    public function update_profile_picture(Request $request)
+    public function update_profilePicture(Request $request)
     {
-        $user_id = $request->cookie('user_id');
+        $userId = $request->cookie('userId');
         $request->validate(
-            ['profile_picture' => 'required']
+            ['profilePicture' => 'required']
         );
-        $result = $request->profile_picture->storeOnCloudinary('SML Social');
-        $image_url = $result->getSecurePath();
-        $user = User::find($user_id);
-        $user->profile_picture_url = $image_url;
+        $result = $request->profilePicture->storeOnCloudinary('SML Social');
+        $imageUrl = $result->getSecurePath();
+        $user = User::find($userId);
+        $user->profilePictureUrl = $imageUrl;
         $user->save();
         return redirect()->back();
     }

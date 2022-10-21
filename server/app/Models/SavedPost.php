@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SavedPost extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'post_id'];
+    protected $fillable = ['userId', 'postId'];
 
     public function user()
     {

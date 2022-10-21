@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory;
-    protected $fillable = ['name', 'email', 'password', 'profile_picture_url'];
+    protected $fillable = ['name', 'email', 'password', 'profilePictureUrl'];
     protected $hidden = ['password'];
 
     public function posts()

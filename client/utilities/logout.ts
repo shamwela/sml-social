@@ -1,4 +1,4 @@
 export const logout = async () => {
-  localStorage.removeItem('email')
+  localStorage.removeItem('userId')
   localStorage.removeItem('password')
 }

@@ -18,43 +18,43 @@ return new class extends Migration
             $table->string('name', 50);
             $table->string('email', 50)->unique();
             $table->string('password', 100);
-            $table->string('profile_picture_url', 100)->nullable();
+            $table->string('profilePictureUrl', 100)->nullable();
             $table->timestamps();
         });
 
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('text', 500);
-            $table->string('image_url', 100)->nullable();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('imageUrl', 100)->nullable();
+            $table->foreignId('userId')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
 
         Schema::create('likes', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('post_id')->constrained('posts')->onDelete('cascade');
-            $table->primary(['user_id', 'post_id']);
+            $table->foreignId('userId')->constrained('users')->onDelete('cascade');
+            $table->foreignId('postId')->constrained('posts')->onDelete('cascade');
+            $table->primary(['userId', 'postId']);
             $table->timestamps();
         });
 
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('post_id')->constrained('posts')->onDelete('cascade');
+            $table->foreignId('userId')->constrained('users')->onDelete('cascade');
+            $table->foreignId('postId')->constrained('posts')->onDelete('cascade');
             $table->string('text', 500);
             $table->timestamps();
         });
 
-        Schema::create('friend_users', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('friend_id')->constrained('users')->onDelete('cascade');
-            $table->primary(['user_id', 'friend_id']);
+        Schema::create('friendUsers', function (Blueprint $table) {
+            $table->foreignId('userId')->constrained('users')->onDelete('cascade');
+            $table->foreignId('friendId')->constrained('users')->onDelete('cascade');
+            $table->primary(['userId', 'friendId']);
         });
 
-        Schema::create('saved_posts', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('post_id')->constrained('posts')->onDelete('cascade');
-            $table->primary(['user_id', 'post_id']);
+        Schema::create('savedPosts', function (Blueprint $table) {
+            $table->foreignId('userId')->constrained('users')->onDelete('cascade');
+            $table->foreignId('postId')->constrained('posts')->onDelete('cascade');
+            $table->primary(['userId', 'postId']);
             $table->timestamps();
         });
     }
@@ -68,8 +68,8 @@ return new class extends Migration
     {
         Schema::dropIfExists('likes');
         Schema::dropIfExists('comments');
-        Schema::dropIfExists('friend_users');
-        Schema::dropIfExists('saved_posts');
+        Schema::dropIfExists('friendUsers');
+        Schema::dropIfExists('savedPosts');
         Schema::dropIfExists('posts');
         Schema::dropIfExists('users');
     }

@@ -29,19 +29,19 @@ Route::middleware(RedirectIfLoggedOut::class)->group(function () {
 
   Route::resource('post', PostController::class);
 
-  Route::post('save-post/{post_id}', [SavedPostController::class, 'save'])->name('save-post');
+  Route::post('save-post/{postId}', [SavedPostController::class, 'save'])->name('save-post');
   Route::get('saved-posts', [SavedPostController::class, 'index'])->name('saved-posts.index');
-  Route::delete('unsave-post/{post_id}', [SavedPostController::class, 'destroy'])->name('unsave-post');
+  Route::delete('unsave-post/{postId}', [SavedPostController::class, 'destroy'])->name('unsave-post');
 
   Route::resource('user', UserController::class);
-  Route::post('friend/store/{friend_id}', [UserController::class, 'add_friend'])->name('friend.store');
+  Route::post('friend/store/{friendId}', [UserController::class, 'add_friend'])->name('friend.store');
 
-  Route::post('like/{post_id}', [LikeController::class, 'like'])->name('like');
-  Route::delete('unlike/{post_id}', [LikeController::class, 'unlike'])->name('unlike');
+  Route::post('like/{postId}', [LikeController::class, 'like'])->name('like');
+  Route::delete('unlike/{postId}', [LikeController::class, 'unlike'])->name('unlike');
 
-  Route::post('comment/{post_id}', [CommentController::class, 'store'])->name('comment.store');
+  Route::post('comment/{postId}', [CommentController::class, 'store'])->name('comment.store');
 
   Route::get('search', [SearchController::class, 'show'])->name('search');
   Route::view('menu', 'menu')->name('menu');
-  Route::post('profile-picture', [UserController::class, 'update_profile_picture'])->name('profile-picture');
+  Route::post('profile-picture', [UserController::class, 'update_profilePicture'])->name('profile-picture');
 });

@@ -2,11 +2,11 @@ import { axios } from 'utilities/axios'
 
 const Home = () => {
   const getPosts = async () => {
-    const email = localStorage.getItem('email')
+    const userId = localStorage.getItem('userId')
     const password = localStorage.getItem('password')
     const { data: posts } = await axios.get('/posts', {
       params: {
-        email,
+        userId,
         password,
       },
     })

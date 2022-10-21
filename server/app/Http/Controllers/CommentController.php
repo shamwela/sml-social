@@ -8,16 +8,16 @@ use Exception;
 
 class CommentController extends Controller
 {
-    public function store(Request $request, $post_id)
+    public function store(Request $request, $postId)
     {
         $request->validate(['text' => 'required|max:500']);
-        $user_id = $request->cookie('user_id');
+        $userId = $request->cookie('userId');
         $text = $request->text;
         try {
-            Comment::create(compact('user_id', 'post_id', 'text'));
+            Comment::create(compact('userId', 'postId', 'text'));
         } catch (Exception $exception) {
             dd($exception);
         }
-        return redirect()->route('post.show', $post_id);
+        return redirect()->route('post.show', $postId);
     }
 }

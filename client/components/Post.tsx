@@ -1,34 +1,36 @@
-<div class='bg-white p-4 rounded-lg flex flex-col gap-y-4 post'>
-    @if ($post->user_id and $post->user_name)
-      <a href={{ route('user.show', $post->user_id) }}>
-        <strong>{{ $post->user_name }}</strong>
+
+export const Post = ({post}: {post:any}) => {
+  return <div className='bg-white p-4 rounded-lg flex flex-col gap-y-4 post'>
+    @if ($post->userId and $post->userName)
+      <a href={{ route('user.show', $post->userId) }}>
+        <strong>{{ $post->userName }}</strong>
       </a>
     @endif
 
     <a href='{{ route("post.show", $post->id) }}'>{{ $post->text }}</a>
     
-    @if ($post->image_url)
-      <img src='{{ $post->image_url }}' alt='Image posted by {{ $post->user_name }}' width='500'>
+    @if ($post->imageUrl)
+      <img src='{{ $post->imageUrl }}' alt='Image posted by {{ $post->userName }}' width='500'>
     @endif
 
     <a href='{{ route("post.show", $post->id) }}' class='flex gap-x-4'>
-      @if ($post->like_count < 1)
-      @elseif ($post->like_count === 1)
-        <span>{{ $post->like_count }} like</span>
+      @if ($post->likeCount < 1)
+      @elseif ($post->likeCount === 1)
+        <span>{{ $post->likeCount }} like</span>
       @else
-        <span>{{ $post->like_count }} likes</span>
+        <span>{{ $post->likeCount }} likes</span>
       @endif
       
-      @if ($post->comment_count < 1)
-      @elseif ( $post->comment_count === 1)
-        <span>{{ $post->comment_count }} comment</span>
+      @if ($post->commentCount < 1)
+      @elseif ( $post->commentCount === 1)
+        <span>{{ $post->commentCount }} comment</span>
       @else
-        <span>{{ $post->comment_count }} comments</span>
+        <span>{{ $post->commentCount }} comments</span>
       @endif
     </a>
 
     <div class='flex gap-x-4 items-center'>
-        @if ($post->is_liked)
+        @if ($post->isLiked)
           <form action='{{ route("unlike", $post->id) }}' method='post'>
             @method('delete')
             @csrf
@@ -47,7 +49,7 @@
         </form>
 
         {{-- Only if the current user's the owner, he can edit or delete --}}
-        @if ($post->user_id === (int)Cookie::get('user_id'))
+        @if ($post->userId === (int)Cookie::get('userId'))
           <a href='{{ route("post.edit", $post->id) }}' class='button'>Edit</a>
           
           <form action='{{ route("post.destroy", $post->id) }}' method='post'>
@@ -67,10 +69,12 @@
       @if (request()->is('post/*'))
         @foreach ($comments as $comment)
            <div class='flex flex-col gap-y-2 bg-gray-100 rounded-lg px-4 py-2'>
-            <a href='{{ route("user.show", $comment->commentator_id) }}'>{{ $comment->commentator_name }}</a>
+            <a href='{{ route("user.show", $comment->commentatorId) }}'>{{ $comment->commentatorName }}</a>
 
             <span>{{ $comment->text }}</span>
           </div> 
         @endforeach
       @endif
 </div>
+}
+

@@ -1,9 +1,9 @@
 <x-layout :title='$user->name'>
   <div class='flex flex-col gap-y-4 items-center'>
     
-    @if ($user->profile_picture_url)
+    @if ($user->profilePictureUrl)
       <img
-        src='{{ $user->profile_picture_url }}'
+        src='{{ $user->profilePictureUrl }}'
        
         {{-- For example, Sha Mwe La's profile picture --}}
         alt='{{ $user->name . "'s profile picture" }}'
@@ -19,8 +19,8 @@
     
     <form action='{{ route("profile-picture") }}' method='post' enctype='multipart/form-data'>
       @csrf
-      <label for='profile_picture' class='button'>Update profile picture</label>
-      <input name='profile_picture' id='profile_picture' type='file' class='hidden' onchange='form.submit()' required>
+      <label for='profilePicture' class='button'>Update profile picture</label>
+      <input name='profilePicture' id='profilePicture' type='file' class='hidden' onchange='form.submit()' required>
     </form>
   </div>
   

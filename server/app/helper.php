@@ -1,10 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Cookie;
-use App\Models\Like;
+use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
-function is_logged_in()
+function isLoggedIn(Request $request)
 {
-  return Cookie::get('user_id') and Cookie::get('email') and Cookie::get('password');
+  $userId = $request->userId;
+  $password = $request->password;
+  $user = User::find($userId);
+  if (!Hash::check($password, $user->password)) {
+    return false;
+  }
+  return true;
 }
-

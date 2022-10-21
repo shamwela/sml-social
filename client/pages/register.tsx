@@ -21,7 +21,7 @@ const Register = () => {
 
     let registerPromise: Promise<AxiosResponse<any, any>>
     try {
-      registerPromise = axios.post('/api/register', { name, email, password })
+      registerPromise = axios.post('/register', { name, email, password })
 
       toast.promise(registerPromise, {
         loading: 'Registering',
@@ -39,7 +39,8 @@ const Register = () => {
       return
     }
 
-    localStorage.setItem('email', email)
+    const { data: userId } = await registerPromise
+    localStorage.setItem('userId', userId)
     localStorage.setItem('password', password)
     await router.push('/')
     router.reload()

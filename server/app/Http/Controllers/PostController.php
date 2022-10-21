@@ -7,46 +7,37 @@ use App\Models\Post;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\LikeController;
 use App\Models\Comment;
-use Illuminate\Foundation\Auth\User;
-use Illuminate\Support\Facades\Hash;
 
 class PostController extends Controller
 {
-    public function get_friend_posts(Request $request)
+    public function getFriendPosts(Request $request)
     {
-        $email = $request->email;
-        $password = $request->password;
-        $user = User::where('email', $email)->first();
-        $user_id  = $user->id;
-        if (!$user) {
-            // return error
+        if (!isLoggedIn($request)) {
+            // Return error here later
             return;
         }
-        if (!Hash::check($password, $user->password)) {
-            // Wrong password
-            return;
-        }
+        $userId = $request->userId;
         $posts = DB::select(
             DB::raw(
-                'select posts.id, text, image_url, posts.user_id, name as user_name
+                'select posts.id, text, imageUrl, posts.userId, name as userName
                 from posts
 
                 -- Only select friend posts, not all posts
-                inner join friend_users on friend_users.friend_id = posts.user_id
+                inner join friendUsers on friendUsers.friendId = posts.userId
 
                 -- Also join with users table to get names
-                inner join users on users.id = posts.user_id
+                inner join users on users.id = posts.userId
 
-                where friend_users.user_id = :user_id'
+                where friendUsers.userId = :userId'
             ),
             // Give input like this to prevent SQL injection
-            compact('user_id')
+            compact('userId')
         );
 
         foreach ($posts as $post) {
-            app(LikeController::class)->add_like_data($post, $user_id);
+            app(LikeController::class)->addLikeData($post, $userId);
 
-            $post->comment_count = count(Comment::where('post_id', $post->id)->get());
+            $post->commentCount = count(Comment::where('postId', $post->id)->get());
         }
 
         return response($posts);
@@ -57,11 +48,11 @@ class PostController extends Controller
         $request->validate(['text' => 'required|max:500']);
         $post = new Post;
         $post->text = $request->text;
-        $post->user_id = $request->cookie('user_id');
+        $post->userId = $request->cookie('userId');
         if ($request->hasFile('image')) {
             $result = $request->image->storeOnCloudinary('SML Social');
-            $image_url = $result->getSecurePath();
-            $post->image_url = $image_url;
+            $imageUrl = $result->getSecurePath();
+            $post->imageUrl = $imageUrl;
         }
         $post->save();
         return redirect()->route('home');
@@ -69,37 +60,37 @@ class PostController extends Controller
 
     public function show(Request $request, $id)
     {
-        $post_id = $id;
+        $postId = $id;
         $posts = DB::select(
             DB::raw(
-                'select posts.id, text, image_url, posts.user_id, name as user_name
+                'select posts.id, text, imageUrl, posts.userId, name as userName
                 from posts
 
                 -- join with users table to get names
-                inner join users on users.id = posts.user_id
+                inner join users on users.id = posts.userId
 
-                where posts.id = :post_id'
+                where posts.id = :postId'
             ),
             // Give input like this to prevent SQL injection
-            compact('post_id')
+            compact('postId')
         );
 
         // Since the post ID is unique, there'll be only one post
         $post = $posts[0];
-        $user_id = $request->cookie('user_id');
-        app(LikeController::class)->add_like_data($post, $user_id);
+        $userId = $request->cookie('userId');
+        app(LikeController::class)->addLikeData($post, $userId);
 
         $comments = DB::select(
             DB::raw(
-                'select users.name as commentator_name, users.id as commentator_id, text
+                'select users.name as commentatorName, users.id as commentatorId, text
                 from comments
-                inner join users on users.id = comments.user_id
-                where comments.post_id = :post_id
+                inner join users on users.id = comments.userId
+                where comments.postId = :postId
                 order by comments.created_at desc'
             ),
-            compact('post_id')
+            compact('postId')
         );
-        $post->comment_count = count($comments);
+        $post->commentCount = count($comments);
 
         return view('post.show', compact('post', 'comments'));
     }

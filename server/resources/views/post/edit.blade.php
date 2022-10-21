@@ -3,7 +3,7 @@
     @method('put')
     @csrf
     <x-input name='text' type='textarea' />
-    <img src='{{ $post->image_url }}' alt='Post image' width='500'>
+    <img src='{{ $post->imageUrl }}' alt='Post image' width='500'>
     <button type='submit'>Save</button>
   </form>
 </x-layout>
