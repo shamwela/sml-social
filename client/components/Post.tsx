@@ -1,72 +1,98 @@
+import Link from 'next/link'
 
-export const Post = ({post}: {post:any}) => {
-  return <div className='bg-white p-4 rounded-lg flex flex-col gap-y-4 post'>
-    @if ($post->userId and $post->userName)
-      <a href={{ route('user.show', $post->userId) }}>
-        <strong>{{ $post->userName }}</strong>
-      </a>
-    @endif
+type Post = {
+  id: number
+  text: string
+  imageUrl: string
+  userId: number
+  userName: string
+  isLiked: boolean
+}
 
-    <a href='{{ route("post.show", $post->id) }}'>{{ $post->text }}</a>
-    
-    @if ($post->imageUrl)
-      <img src='{{ $post->imageUrl }}' alt='Image posted by {{ $post->userName }}' width='500'>
-    @endif
+export const Post = ({ post }: { post: Post }) => {
+  const { id, text, imageUrl, userId, userName, isLiked } = post
 
-    <a href='{{ route("post.show", $post->id) }}' class='flex gap-x-4'>
-      @if ($post->likeCount < 1)
-      @elseif ($post->likeCount === 1)
-        <span>{{ $post->likeCount }} like</span>
-      @else
-        <span>{{ $post->likeCount }} likes</span>
-      @endif
-      
-      @if ($post->commentCount < 1)
-      @elseif ( $post->commentCount === 1)
-        <span>{{ $post->commentCount }} comment</span>
-      @else
-        <span>{{ $post->commentCount }} comments</span>
-      @endif
-    </a>
+  return (
+    <div className='bg-white p-4 rounded-lg flex flex-col gap-y-4 post'>
+      {userId && userName && (
+        <Link href={'/user/' + userId}>
+          <a>
+            <strong>{userName}</strong>
+          </a>
+        </Link>
+      )}
 
-    <div class='flex gap-x-4 items-center'>
-        @if ($post->isLiked)
-          <form action='{{ route("unlike", $post->id) }}' method='post'>
-            @method('delete')
-            @csrf
-            <button type='submit' class='bg-danger'>Unlike</button>
-          </form>
+      <Link href={'/post/' + id}>
+        <a>{text}</a>
+      </Link>
+
+      {imageUrl && (
+        <img src={imageUrl} alt={'Image posted by ' + userName} width='500' />
+      )}
+
+      <Link href={'/post/' + id}>
+        <a className='flex gap-x-4'>
+          {/* Implement these later */}
+          {/* @if ($post->likeCount < 1)
+        @elseif ($post->likeCount === 1)
+          <span>{{ $post->likeCount }} like</span>
         @else
-          <form action='{{ route("like", $post->id) }}' method='post'>
-            @csrf
-            <button type='submit'>Like</button>
-          </form>
+          <span>{{ $post->likeCount }} likes</span>
         @endif
+      
+        @if ($post->commentCount < 1)
+        @elseif ( $post->commentCount === 1)
+          <span>{{ $post->commentCount }} comment</span>
+        @else
+          <span>{{ $post->commentCount }} comments</span>
+        @endif */}
+        </a>
+      </Link>
 
-        <form action='{{ route("save-post", $post->id) }}' method='post'>
+      <div className='flex gap-x-4 items-center'>
+        {/* {isLiked?
+           improve
+           <form action='{{ route("unlike", $post->id) }}' method='post'>
+             @method('delete')
+             @csrf
+             <button type='submit' class='bg-danger'>Unlike</button>
+           </form>
+        :
+           Implement optimistic update here later
+           <form action='{{ route("like", $post->id) }}' method='post'>
+             <button type='submit'>Like</button>
+           </form>
+        } */}
+
+        {/* <form action='{{ route("save-post", $post->id) }}' method='post'>
           @csrf
           <button type='submit'>Save</button>
-        </form>
+        </form> */}
 
-        {{-- Only if the current user's the owner, he can edit or delete --}}
-        @if ($post->userId === (int)Cookie::get('userId'))
-          <a href='{{ route("post.edit", $post->id) }}' class='button'>Edit</a>
-          
-          <form action='{{ route("post.destroy", $post->id) }}' method='post'>
+        {/* Only if the current user's the owner, he can edit or delete */}
+        {userId === Number(localStorage.getItem('userId')) && (
+          <>
+            <a href='{{ route("post.edit", $post->id) }}' class='button'>
+              Edit
+            </a>
+
+            {/* Implement */}
+            {/* <form action='{{ route("post.destroy", $post->id) }}' method='post'>
             @method('delete')
             @csrf
-            <button onclick='return confirm("Are you sure?")' type='submit' class='bg-danger'>Delete</button>
-          </form>
-        @endif
+            <button type='submit' class='bg-danger'>Delete</button>
+          </form> */}
+          </>
+        )}
       </div>
 
-      <form action='{{ route("comment.store", $post->id) }}' method='post'>
+      {/* <form action='{{ route("comment.store", $post->id) }}' method='post'>
         @csrf
         <input name='text' placeholder='Write a comment...' type='text' class='bg-gray-100' autocomplete='off' required>
-      </form>
+      </form> */}
 
-      {{-- Only show comments in the post details page --}}
-      @if (request()->is('post/*'))
+      {/* Only show comments in the post details page */}
+      {/* @if (request()->is('post/*'))
         @foreach ($comments as $comment)
            <div class='flex flex-col gap-y-2 bg-gray-100 rounded-lg px-4 py-2'>
             <a href='{{ route("user.show", $comment->commentatorId) }}'>{{ $comment->commentatorName }}</a>
@@ -74,7 +100,7 @@ export const Post = ({post}: {post:any}) => {
             <span>{{ $comment->text }}</span>
           </div> 
         @endforeach
-      @endif
-</div>
+      @endif */}
+    </div>
+  )
 }
-

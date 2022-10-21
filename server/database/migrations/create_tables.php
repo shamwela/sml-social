@@ -26,34 +26,51 @@ return new class extends Migration
             $table->id();
             $table->string('text', 500);
             $table->string('imageUrl', 100)->nullable();
-            $table->foreignId('userId')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('userId');
+            $table->foreign('userId')->references('id')->on('users');
             $table->timestamps();
         });
 
         Schema::create('likes', function (Blueprint $table) {
-            $table->foreignId('userId')->constrained('users')->onDelete('cascade');
-            $table->foreignId('postId')->constrained('posts')->onDelete('cascade');
+            $table->unsignedBigInteger('userId');
+            $table->foreign('userId')->references('id')->on('users');
+
+            $table->unsignedBigInteger('postId');
+            $table->foreign('postId')->references('id')->on('posts');
+
             $table->primary(['userId', 'postId']);
             $table->timestamps();
         });
 
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('userId')->constrained('users')->onDelete('cascade');
-            $table->foreignId('postId')->constrained('posts')->onDelete('cascade');
+
+            $table->unsignedBigInteger('userId');
+            $table->foreign('userId')->references('id')->on('users');
+
+            $table->unsignedBigInteger('postId');
+            $table->foreign('postId')->references('id')->on('posts');
+
             $table->string('text', 500);
             $table->timestamps();
         });
 
         Schema::create('friendUsers', function (Blueprint $table) {
-            $table->foreignId('userId')->constrained('users')->onDelete('cascade');
-            $table->foreignId('friendId')->constrained('users')->onDelete('cascade');
+            $table->unsignedBigInteger('userId');
+            $table->foreign('userId')->references('id')->on('users');
+
+            $table->unsignedBigInteger('friendId');
+            $table->foreign('friendId')->references('id')->on('users');
             $table->primary(['userId', 'friendId']);
         });
 
         Schema::create('savedPosts', function (Blueprint $table) {
-            $table->foreignId('userId')->constrained('users')->onDelete('cascade');
-            $table->foreignId('postId')->constrained('posts')->onDelete('cascade');
+            $table->unsignedBigInteger('userId');
+            $table->foreign('userId')->references('id')->on('users');
+
+            $table->unsignedBigInteger('postId');
+            $table->foreign('postId')->references('id')->on('posts');
+            
             $table->primary(['userId', 'postId']);
             $table->timestamps();
         });
