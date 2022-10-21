@@ -59,6 +59,9 @@ class UserController extends Controller
             $post->user_name = $user->name;
             app(LikeController::class)->add_like_data($post, $user_id);
             $post->comment_count = count(Comment::where('post_id', $post->id)->get());
+
+            // Since profile_picture_url will be accessed on post
+            $post->profile_picture_url = $user->profile_picture_url;
         }
         return view('user.show', compact('user', 'posts'));
     }

@@ -1,9 +1,24 @@
 <div class='bg-white p-4 rounded-lg flex flex-col gap-y-4 post'>
-    @if ($post->user_id and $post->user_name)
+    <div class='flex gap-x-4 items-center'>
+      <a href={{ route('user.show', $post->user_id) }}>
+        @if ($post->profile_picture_url)
+          <img
+          src='{{ $post->profile_picture_url }}'
+          alt='Profile picture of {{ $post->user_name }}'
+          class='rounded-full object-cover w-10 h-10'>
+        @else
+          <img
+            src='{{ asset("placeholder.png") }}'
+            alt='Placeholder profile picture'
+            class='rounded-full object-cover w-10 h-10'
+          >
+        @endif
+      </a>
+
       <a href={{ route('user.show', $post->user_id) }}>
         <strong>{{ $post->user_name }}</strong>
       </a>
-    @endif
+    </div>
 
     <a href='{{ route("post.show", $post->id) }}'>{{ $post->text }}</a>
     

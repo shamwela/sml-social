@@ -4,9 +4,7 @@
     @if ($user->profile_picture_url)
       <img
         src='{{ $user->profile_picture_url }}'
-       
-        {{-- For example, Sha Mwe La's profile picture --}}
-        alt='{{ $user->name . "'s profile picture" }}'
+        alt='Profile picture of {{ $user->name }}'
         class='rounded-full object-cover w-36 h-36'
       >
     @else

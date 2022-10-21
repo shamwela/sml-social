@@ -24,7 +24,7 @@ class PostController extends Controller
         $user_id = $request->cookie('user_id');
         $posts = DB::select(
             DB::raw(
-                'select posts.id, text, image_url, posts.user_id, name as user_name
+                'select posts.id, text, image_url, posts.user_id, name as user_name, profile_picture_url
                 from posts
 
                 -- Only select friend posts, not all posts
@@ -76,7 +76,7 @@ class PostController extends Controller
         $post_id = $id;
         $posts = DB::select(
             DB::raw(
-                'select posts.id, text, image_url, posts.user_id, name as user_name
+                'select posts.id, text, image_url, posts.user_id, name as user_name, profile_picture_url
                 from posts
 
                 -- join with users table to get names
