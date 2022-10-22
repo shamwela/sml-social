@@ -60,12 +60,6 @@ class DatabaseSeeder extends Seeder
             'text' => 'Test comment'
         ]);
 
-        DB::table('friends')->insert([
-            'user_id' => 1,
-            'friend_id' => 2,
-            'confirmed' => 1
-        ]);
-
         DB::table('saved_posts')->insert([
             'user_id' => 1,
             'post_id' => 1

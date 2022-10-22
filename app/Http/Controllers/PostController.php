@@ -28,14 +28,12 @@ class PostController extends Controller
                 from posts
 
                 -- Only select friend posts, not all posts
-                inner join friends on friends.user_id = posts.user_id
+                inner join friends on friends.friend_id = posts.user_id
 
                 -- Also join with users table to get names
                 inner join users on users.id = posts.user_id
 
-                where friends.friend_id = :user_id
-                -- Only confirmed friends
-                and friends.confirmed = 1
+                where friends.user_id = :user_id
                 
                 order by posts.created_at desc'
             ),

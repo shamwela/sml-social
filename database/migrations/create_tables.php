@@ -48,9 +48,14 @@ return new class extends Migration
         Schema::create('friends', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('friend_id')->constrained('users')->onDelete('cascade');
-
-            $table->boolean('confirmed');
             $table->primary(['user_id', 'friend_id']);
+            $table->timestamps();
+        });
+
+        Schema::create('friend_requests', function (Blueprint $table) {
+            $table->foreignId('requester_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('receiver_id')->constrained('users')->onDelete('cascade');
+            $table->primary(['requester_id', 'receiver_id']);
             $table->timestamps();
         });
 

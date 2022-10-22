@@ -8,7 +8,7 @@ use App\Models\Post;
 use App\Http\Controllers\LikeController;
 use App\Models\Comment;
 use App\Models\Friend;
-use Illuminate\Support\Facades\DB;
+use App\Models\FriendRequest;
 
 class UserController extends Controller
 {
@@ -22,19 +22,25 @@ class UserController extends Controller
         $users = User::all();
         $user_id = $request->cookie('user_id');
         foreach ($users as $user) {
+            $other_user_id = $user->id;
             // Check if friends
             // Query builder would return an array no matter how many record it gets
-            $friendArray = Friend::where('user_id', $user_id)
+            $friend_array = Friend::where('user_id', $user_id)
                 // the other user
-                ->where('friend_id', $user->id)
+                ->where('friend_id', $other_user_id)
                 ->get();
 
-            if ($friendArray->isEmpty()) {
+            $friend_request_array = FriendRequest::where('requester_id', $user_id)
+                ->where('receiver_id', $other_user_id)
+                ->get();
+
+            // If neither friends nor requested
+            if ($friend_array->isEmpty() and $friend_request_array->isEmpty()) {
                 $user->status = 'stranger';
-            } elseif ($friendArray[0]->confirmed == 0) {
-                $user->status = 'requested';
-            } else {
+            } elseif ($friend_array->isNotEmpty()) {
                 $user->status = 'friend';
+            } else {
+                $user->status = 'requested';
             }
         }
 
