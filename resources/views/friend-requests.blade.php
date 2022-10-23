@@ -5,7 +5,7 @@
     @else
       @foreach ($requesters as $requester)
         <div class='flex justify-center gap-x-4 items-center'>
-          <a href={{ $requester->id }}>{{ $requester->name }}</a>
+          <a href={{ route('user.show', $requester->id) }}>{{ $requester->name }}</a>
 
           <form action={{ route('friend.confirm', $requester->id) }} method='post'>
             @csrf
