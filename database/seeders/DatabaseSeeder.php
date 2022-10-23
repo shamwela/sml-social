@@ -36,13 +36,13 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('posts')->insert([
-            'text' => 'Hi this is my app.',
-            'user_id' => 1
+            'user_id' => 1,
+            'text' => 'Hi this is my app.'
         ]);
 
         DB::table('posts')->insert([
-            'text' => 'Hi. My name is Steve Jobs.',
-            'user_id' => 2
+            'user_id' => 2,
+            'text' => 'Hi. My name is Steve Jobs.'
         ]);
 
         DB::table('likes')->insert([
