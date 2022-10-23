@@ -60,4 +60,12 @@ class SavedPostController extends Controller
         }
         return redirect()->back();
     }
+
+    public function is_saved($post_id, $user_id)
+    {
+        return SavedPost::where('post_id', $post_id)
+            ->where('user_id', $user_id)
+            ->get()
+            ->isNotEmpty();
+    }
 }

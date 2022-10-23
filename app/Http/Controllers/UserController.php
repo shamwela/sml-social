@@ -88,6 +88,8 @@ class UserController extends Controller
 
             // Since profile_picture_url will be accessed on post
             $post->profile_picture_url = $user->profile_picture_url;
+
+            $post->is_saved = app(SavedPostController::class)->is_saved($post->id, $user_id);
         }
         return view('user.show', compact('user', 'posts'));
     }

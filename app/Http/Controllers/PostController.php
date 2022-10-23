@@ -7,18 +7,10 @@ use App\Models\Post;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\LikeController;
 use App\Models\Comment;
-use App\Models\SavedPost;
+use App\Http\Controllers\SavedPostController;
 
 class PostController extends Controller
 {
-    private function is_saved($post_id, $user_id)
-    {
-        return SavedPost::where('post_id', $post_id)
-            ->where('user_id', $user_id)
-            ->get()
-            ->isNotEmpty();
-    }
-
     public function show_friend_posts(Request $request)
     {
         $user_id = $request->cookie('user_id');
@@ -46,7 +38,7 @@ class PostController extends Controller
 
             $post->comment_count = count(Comment::where('post_id', $post->id)->get());
 
-            $post->is_saved = $this->is_saved($post->id, $user_id);
+            $post->is_saved = app(SavedPostController::class)->is_saved($post->id, $user_id);
         }
 
         return view('home', compact('posts'));
@@ -106,7 +98,7 @@ class PostController extends Controller
             compact('post_id')
         );
         $post->comment_count = count($comments);
-        $post->is_saved = $this->is_saved($post_id, $user_id);
+        $post->is_saved = app(SavedPostController::class)->is_saved($post_id, $user_id);
 
         return view('post.show', compact('post', 'comments'));
     }
