@@ -29,18 +29,19 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password')
         ]);
 
+        DB::table('users')->insert([
+            'name' => 'Bill Gates',
+            'email' => 'billgates@microsoft.com',
+            'password' => Hash::make('password')
+        ]);
+
         DB::table('posts')->insert([
             'text' => 'Hi this is my app.',
             'user_id' => 1
         ]);
 
         DB::table('posts')->insert([
-            'text' => 'Focus is about saying no.',
-            'user_id' => 2
-        ]);
-
-        DB::table('posts')->insert([
-            'text' => 'I wanna eat pizza.',
+            'text' => 'Hi. My name is Steve Jobs.',
             'user_id' => 2
         ]);
 
