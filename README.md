@@ -1,6 +1,6 @@
 # SML Social
 
-Facebook clone. I built everything on my own.
+Facebook clone
 
 ## Features
 
